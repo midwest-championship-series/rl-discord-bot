@@ -1,0 +1,10 @@
+{
+  "ext": "js,ts,json",
+  "ignore": [
+    "./build",
+    "./build/",
+    "./node_modules",
+    "./yarn-error.log",
+    "./yarn.lock"
+  ]
+}
