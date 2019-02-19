@@ -1,2 +1,2 @@
-# express-circleci-launcher
-Example express app launchable on circleci
+# rl-rank-bot
+Bot for keeping Rocket League ranks up to date on the Minnesota Rocket League Discord
