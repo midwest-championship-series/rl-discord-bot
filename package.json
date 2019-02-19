@@ -7,7 +7,7 @@
     "serve:dev": "yarn build:dev && node -r dotenv/config ./build/",
     "serve:prod": "yarn build:prod && forever ./build/",
     "build:dev": "rm -rf build && tsc && cp .env build",
-    "build:prod": "rm -rf build && tsc",
+    "build:prod": "rm -rf build && tsc -p tsconfig-prod.json",
     "test": "yarn build:dev && mocha 'build/**/*.spec.js' --timeout 4000 --exit",
     "test:ci": "yarn build:prod && MOCHA_FILE=./test-results/mocha/results.xml mocha 'build/**/*.spec.js' --reporter mocha-junit-reporter --timeout 4000 --exit"
   },
