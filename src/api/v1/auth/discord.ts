@@ -16,11 +16,10 @@ const credentials: ModuleOptions = {
 
 // Initialize the OAuth2 Library
 const oauth2 = create(credentials)
-const redirect_uri = 'http://localhost:25257/api/v1/auth/discord/callback'
+const redirect_uri = `${process.env.PROTOCOL}://${process.env.HOSTNAME}/api/v1/auth/discord/callback`
 const scope = ['connections']
 
 export function DiscordRedirect(req: Request, res: Response, next: NextFunction): void {
-    console.log('in the redirect route')
     // Authorization oauth2 URI
     const authorizationUri = oauth2.authorizationCode.authorizeURL({
         redirect_uri,
