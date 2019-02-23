@@ -3,7 +3,7 @@ import { json } from 'body-parser'
 import * as methodOverride from 'method-override'
 
 import { HealthCheckHandler } from './healthcheck'
-import { APIRouter } from './api'
+import APIRouter from './api'
 import { SendRequest } from './middleware'
 
 // declare constants
@@ -14,8 +14,8 @@ let app = express()
 
 // middleware stack
 app.use(json({ limit: '20mb' }))
-app.use(HealthCheckHandler)
-app.use(APIRouter)
+app.get('/healthcheck', HealthCheckHandler)
+app.use('/api', APIRouter)
 app.use(SendRequest)
 
 // error handling stack
