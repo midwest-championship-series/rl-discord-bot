@@ -27,7 +27,6 @@ app.use(methodOverride())
 // start web server
 app.listen(PORT, () => {
   console.log(`app listening at port: ${PORT}`)
-  console.log(process.env.DISCORD_SECRET)
 })
 
 // start discord bot
