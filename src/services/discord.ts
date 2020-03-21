@@ -3,14 +3,32 @@ const client = new Discord.Client()
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`)
-  // console.log('connected to...', client.guilds)
-  client.channels.cache.forEach(guild => console.log(guild.name))
 })
 
 client.on('message', msg => {
-  console.log(msg)
-  // if (msg.content === 'ping') {
-  //   msg.reply('pong')
+  if (msg.channel.name === 'dev' || msg.channel.name === 'score-report') {
+    if (msg.content.startsWith('!report')) {
+      // const matchId = msg.content.split()[1]
+      const [command, ...urls] = msg.content.split()
+      const gameIds = urls.map(
+        url =>
+          url
+            .split('?')[0]
+            .split('/')
+            .slice(-1)[0],
+      )
+      msg.channel.send(`Thank you for the report!\nGames reported: ${gameIds.map(id => `${id}, `)}`)
+      // if (matchId) {
+      // check who message is from
+      // if it is from moderator, accept no matter what
+      // format: !report @tero <game_id> <game_id> <game_id> <game_id>
+      // tell serverless app to store the results of that game
+      // report any validation errors provided by serverless app
+      // }
+    }
+  }
+  // if (msg.content.startsWith('!kick')) {
+  //   msg.channel.send("I can't kick brosia, he's too nice")
   // }
 })
 
