@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 
 export function SendRequest(req: Request, res: Response, next: NextFunction) {
-  let { body } = res
+  const { body } = res
   if (body) {
     return res.send(body)
   } else {

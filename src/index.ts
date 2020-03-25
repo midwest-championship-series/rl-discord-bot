@@ -8,6 +8,7 @@ import { SendRequest } from './middleware'
 
 // sets config variables
 require('dotenv').config()
+console.log(process.env.DISCORD_CLIENT_ID, process.env.DISCORD_CLIENT_SECRET)
 
 // declare constants
 const PORT: number = parseInt(process.env.PORT) || 25257

@@ -8,8 +8,8 @@ client.on('ready', () => {
 client.on('message', msg => {
   if (msg.channel.name === 'dev' || msg.channel.name === 'score-report') {
     if (msg.content.startsWith('!report')) {
-      // const matchId = msg.content.split()[1]
-      const [command, ...urls] = msg.content.split()
+      console.log('msg', msg)
+      const [command, ...urls] = msg.content.split(' ')
       const gameIds = urls.map(
         url =>
           url
@@ -17,7 +17,7 @@ client.on('message', msg => {
             .split('/')
             .slice(-1)[0],
       )
-      msg.channel.send(`Thank you for the report!\nGames reported: ${gameIds.map(id => `${id}, `)}`)
+      msg.channel.send(`Thank you for the report, @${msg.author.username}!\nGames reported: ${gameIds.join(', ')}`)
       // if (matchId) {
       // check who message is from
       // if it is from moderator, accept no matter what
@@ -32,4 +32,4 @@ client.on('message', msg => {
   // }
 })
 
-client.login(process.env.DISCORD_SECRET)
+client.login(process.env.DISCORD_BOT_SECRET)

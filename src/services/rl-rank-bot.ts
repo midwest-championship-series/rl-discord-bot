@@ -1,3 +1,14 @@
 import request from '../utils/request'
 
-const baseUrl = 'https://w3n5meiq00.execute-api.us-east-1.amazonaws.com/dev'
+const baseUrl = process.env.RL_STATS_URL
+
+export const get = (table: string, query: any = {}) => {
+  return request({
+    method: 'GET',
+    url: [baseUrl, table].join('/'),
+    qs: query,
+    auth: {
+      bearer: process.env.RL_STATS_SECRET,
+    },
+  })
+}
