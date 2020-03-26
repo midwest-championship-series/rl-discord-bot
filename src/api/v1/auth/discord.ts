@@ -24,10 +24,11 @@ const getRedirect = () => `${process.env.PROTOCOL}://${process.env.HOST}/api/v1/
 const scope = 'identify connections'
 
 const syncMembers = (knownMembers, discordUser) => {
+  const id = uuid()
   const insert = discordUser.connections
     .filter(c => c.type === 'steam' || c.type === 'xbox')
     .map(connection => ({
-      id: uuid(),
+      id,
       discord_id: discordUser.id,
       platform: connection.type,
       platform_id: connection.id,
