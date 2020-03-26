@@ -5,9 +5,10 @@
   "scripts": {
     "start": "nodemon -L --exec node --inspect=9229 -r ts-node/register src",
     "serve:dev": "yarn build:dev && node -r dotenv/config ./build/",
-    "serve:prod": "yarn build:prod && forever ./build/",
+    "serve:prod": "yarn build:webpack && forever ./build/",
     "build:dev": "rm -rf build && tsc && cp .env build",
     "build:prod": "rm -rf build && tsc",
+    "build:webpack": "webpack",
     "test": "yarn build:dev && mocha 'build/**/*.spec.js' --timeout 4000 --exit",
     "test:ci": "yarn build:prod && MOCHA_FILE=./test-results/mocha/results.xml mocha 'build/**/*.spec.js' --reporter mocha-junit-reporter --timeout 4000 --exit"
   },
@@ -50,7 +51,11 @@
     "nodemon": "^1.18.9",
     "prettier": "^1.19.1",
     "sinon": "^7.2.2",
-    "ts-node": "^8.7.0"
+    "ts-loader": "^6.2.2",
+    "ts-node": "^8.7.0",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-node-externals": "^1.7.2"
   },
   "engines": {
     "node": "^v12.13.0"
