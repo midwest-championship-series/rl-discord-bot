@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "a bot to keep ranks up to date on discord servers",
   "scripts": {
+    "build": "webpack",
     "start": "nodemon -L --exec node --inspect=9229 -r ts-node/register src",
     "serve:dev": "yarn build:dev && node -r dotenv/config ./build/",
-    "serve:prod": "yarn build:webpack && forever ./build/",
+    "serve:prod": "pm2-runtime start ecosystem.config.js",
     "build:dev": "rm -rf build && tsc && cp .env build",
     "build:prod": "rm -rf build && tsc",
-    "build:webpack": "webpack",
     "test": "yarn build:dev && mocha 'build/**/*.spec.js' --timeout 4000 --exit",
     "test:ci": "yarn build:prod && MOCHA_FILE=./test-results/mocha/results.xml mocha 'build/**/*.spec.js' --reporter mocha-junit-reporter --timeout 4000 --exit"
   },
@@ -25,6 +25,7 @@
     "express": "^4.16.4",
     "forever": "^0.15.3",
     "method-override": "^3.0.0",
+    "pm2": "^4.2.3",
     "request": "^2.88.2",
     "simple-oauth2": "^2.2.1",
     "typescript": "^3.7.2",
