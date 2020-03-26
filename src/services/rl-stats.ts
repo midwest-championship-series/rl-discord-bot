@@ -21,4 +21,12 @@ const put = (table: string, body: any) => {
   })
 }
 
-export default { get, put }
+const report = (gameIds, reporterDiscordId) => {
+  return request({
+    method: 'POST',
+    url: [baseUrl, 'games', '_report'].join('/'),
+    body: { game_ids: gameIds, reporter_discord_id: reporterDiscordId },
+  })
+}
+
+export default { get, put, report }
