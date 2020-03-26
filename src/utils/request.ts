@@ -29,16 +29,23 @@ export const request = (inputOptions: EdjiRequestOptions) => {
   const makeRequest = () => {
     return new Promise((resolve, reject) => {
       nodeRequest(options, (err, res, body) => {
-        if (!err) return resolve(body)
-        const requestError = new EdjiRequestError({
-          message: err.message || `error making ${options.method} request to ${options.url}`,
-          url: options.url.toString(),
-          method: options.method,
-          body,
-          statusCode: res.statusCode,
-          retryCount: retryCount,
-        })
-        return reject(requestError)
+        if (!err && res.statusCode < 400) {
+          return resolve(body)
+        } else {
+          return reject(
+            new EdjiRequestError({
+              message:
+                (err && err.message) ||
+                `error making ${options.method} request to ${options.url} failed with status code ${res &&
+                  res.statusCode}`,
+              url: options.url.toString(),
+              method: options.method,
+              body,
+              statusCode: res.statusCode,
+              retryCount: retryCount,
+            }),
+          )
+        }
       })
     }).catch(err => {
       if (retryCount >= options.retries || !options.retryOnStatusCodes.includes(err.statusCode)) {

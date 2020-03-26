@@ -1,3 +1,5 @@
+import request from '../utils/request'
+
 const Discord = require('discord.js')
 const client = new Discord.Client()
 
@@ -8,7 +10,6 @@ client.on('ready', () => {
 client.on('message', msg => {
   if (msg.channel.name === 'dev' || msg.channel.name === 'score-report') {
     if (msg.content.startsWith('!report')) {
-      console.log('msg', msg)
       const [command, ...urls] = msg.content.split(' ')
       const gameIds = urls.map(
         url =>
@@ -18,18 +19,34 @@ client.on('message', msg => {
             .slice(-1)[0],
       )
       msg.channel.send(`Thank you for the report, @${msg.author.username}!\nGames reported: ${gameIds.join(', ')}`)
-      // if (matchId) {
-      // check who message is from
-      // if it is from moderator, accept no matter what
-      // format: !report @tero <game_id> <game_id> <game_id> <game_id>
-      // tell serverless app to store the results of that game
-      // report any validation errors provided by serverless app
-      // }
     }
   }
-  // if (msg.content.startsWith('!kick')) {
-  //   msg.channel.send("I can't kick brosia, he's too nice")
-  // }
 })
 
 client.login(process.env.DISCORD_BOT_SECRET)
+
+const baseUrl = 'https://discordapp.com/api'
+
+/**
+ * Gets a user's Discord identity
+ * @param token user's access token from oauth2
+ */
+export const getUser = token => {
+  return request({
+    method: 'GET',
+    url: [baseUrl, 'users', '@me'].join('/'),
+    auth: { bearer: token },
+  })
+}
+
+/**
+ * Gets a list of user's connections
+ * @param token user's access token from oauth2
+ */
+export const getConnections = token => {
+  return request({
+    method: 'GET',
+    url: [baseUrl, 'users', '@me', 'connections'].join('/'),
+    auth: { bearer: token },
+  })
+}

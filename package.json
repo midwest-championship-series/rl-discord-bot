@@ -24,8 +24,10 @@
     "express": "^4.16.4",
     "forever": "^0.15.3",
     "method-override": "^3.0.0",
+    "request": "^2.88.2",
     "simple-oauth2": "^2.2.1",
-    "typescript": "^3.2.2"
+    "typescript": "^3.2.2",
+    "uuid": "^7.0.2"
   },
   "devDependencies": {
     "@types/body-parser": "^1.17.0",
@@ -35,6 +37,7 @@
     "@types/request": "^2.48.4",
     "@types/simple-oauth2": "^2.2.1",
     "@types/sinon": "^7.0.3",
+    "@types/uuid": "^7.0.2",
     "@typescript-eslint/eslint-plugin": "^2.24.0",
     "@typescript-eslint/parser": "^2.24.0",
     "chai": "^4.2.0",

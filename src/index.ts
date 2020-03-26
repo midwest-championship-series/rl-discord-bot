@@ -1,3 +1,5 @@
+// sets config variables
+require('dotenv').config()
 import * as express from 'express'
 import { json } from 'body-parser'
 import * as methodOverride from 'method-override'
@@ -5,10 +7,6 @@ import * as methodOverride from 'method-override'
 import { HealthCheckHandler } from './healthcheck'
 import APIRouter from './api'
 import { SendRequest } from './middleware'
-
-// sets config variables
-require('dotenv').config()
-console.log(process.env.DISCORD_CLIENT_ID, process.env.DISCORD_CLIENT_SECRET)
 
 // declare constants
 const PORT: number = parseInt(process.env.PORT) || 25257
