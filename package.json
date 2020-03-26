@@ -7,7 +7,7 @@
     "serve:dev": "yarn build:dev && node -r dotenv/config ./build/",
     "serve:prod": "yarn build:prod && forever ./build/",
     "build:dev": "rm -rf build && tsc && cp .env build",
-    "build:prod": "rm -rf build && tsc -p tsconfig-prod.json",
+    "build:prod": "rm -rf build && tsc",
     "test": "yarn build:dev && mocha 'build/**/*.spec.js' --timeout 4000 --exit",
     "test:ci": "yarn build:prod && MOCHA_FILE=./test-results/mocha/results.xml mocha 'build/**/*.spec.js' --reporter mocha-junit-reporter --timeout 4000 --exit"
   },
@@ -26,7 +26,7 @@
     "method-override": "^3.0.0",
     "request": "^2.88.2",
     "simple-oauth2": "^2.2.1",
-    "typescript": "^3.2.2",
+    "typescript": "^3.7.2",
     "uuid": "^7.0.2"
   },
   "devDependencies": {

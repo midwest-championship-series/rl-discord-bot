@@ -5,8 +5,9 @@
     "outDir": "./build",
     "typeRoots": ["./types", "./node_modules/@types"],
     "allowJs": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "skipLibCheck": true
   },
   "include": ["src/**/*", ".env"],
-  "exclude": ["node_modules", "types"]
+  "exclude": ["node_modules", "types", "src/**/*.spec.ts"]
 }

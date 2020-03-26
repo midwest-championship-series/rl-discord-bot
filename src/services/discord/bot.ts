@@ -23,7 +23,7 @@ client.on('message', async msg => {
   if (msg.content === 'ping') {
     return msg.author.send('pong')
   }
-  if (channel.name === 'dev' || channel.name === 'score-report') {
+  if (msg.channel.name === 'dev' || msg.channel.name === 'score-report') {
     /**
      * @done response/link handling
      * @todo report game ids to service
@@ -47,10 +47,10 @@ client.on('message', async msg => {
       if (members && members.length > 0) {
         // report scores
         const response = await rlStats.report(gameIds, msg.author.id)
-        channel.send(`Thank you for the report, @${msg.author.username}!\nGames reported: ${gameIds.join(', ')}`)
+        msg.channel.send(`Thank you for the report, @${msg.author.username}!\nGames reported: ${gameIds.join(', ')}`)
       } else {
         // ask user to link account and re-report
-        channel.send(`Unknown MNRL player - please link your account. I'll send instructions in a DM`)
+        msg.channel.send(`Unknown MNRL player - please link your account. I'll send instructions in a DM`)
         requestLinkAccount(msg.author)
       }
     }
