@@ -20,7 +20,9 @@ const requestLinkAccount = author => {
 }
 
 client.on('message', async msg => {
-  const channel = msg.channel
+  if (msg.content === 'ping') {
+    return msg.author.send('pong')
+  }
   if (channel.name === 'dev' || channel.name === 'score-report') {
     /**
      * @done response/link handling
