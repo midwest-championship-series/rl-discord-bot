@@ -91,7 +91,7 @@ client.on('message', async msg => {
         const teamId = msg.mentions.roles.values().next().value.id
         for (let [id, user] of msg.mentions.users) {
           const username = await linkTeam(user, teamId)
-          linked.push(username)
+          if (username) linked.push(username)
         }
         msg.channel.send(`linked players: ${linked.join(', ')}`)
         break
