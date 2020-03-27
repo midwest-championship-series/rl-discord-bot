@@ -20,8 +20,9 @@ const requestLinkAccount = author => {
   author.send(dm)
 }
 
-const linkTeam = async (user, teamId) => {
+const linkTeam = async (user, teamDiscordId) => {
   const registeredPlayers = await rlStats.get('players', { discord_id: user.id })
+  const [team] = await rlStats.get('teams', { discord_id: teamDiscordId })
   if (registeredPlayers.length > 0) return console.log('not going to add duplicates') // don't re-link a player
   const members = await rlStats.get('members', { discord_id: user.id })
   const id = members.length > 0 ? members[0].id : uuid()
@@ -30,7 +31,7 @@ const linkTeam = async (user, teamId) => {
       {
         id,
         discord_id: user.id,
-        team_id: teamId,
+        team_id: team.id,
         screen_name: user.username,
       },
     ],
