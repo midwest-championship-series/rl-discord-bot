@@ -20,10 +20,16 @@ const requestLinkAccount = author => {
 }
 
 client.on('message', async msg => {
-  if (msg.content === 'ping') {
-    return msg.author.send('pong')
+  // handle dms
+  if (!msg.content.name) {
+    if (msg.content === 'ping') {
+      return msg.author.send('pong')
+    }
+    if (msg.content.startsWith('!link')) {
+      return requestLinkAccount(msg.author)
+    }
   }
-  if (msg.channel.name === 'dev' || msg.channel.name === 'score-report') {
+  if (msg.channel.name === 'dev' || msg.channel.name === 'mncs-score-report') {
     /**
      * @done response/link handling
      * @todo report game ids to service
@@ -43,14 +49,13 @@ client.on('message', async msg => {
       )
       // find out if user has a linked account
       const members = await rlStats.get('members', { discord_id: msg.author.id })
-      console.log({ discord_id: msg.author.id }, members)
       if (members && members.length > 0) {
         // report scores
         const response = await rlStats.report(gameIds, msg.author.id)
         msg.channel.send(`Thank you for the report, @${msg.author.username}!\nGames reported: ${gameIds.join(', ')}`)
       } else {
         // ask user to link account and re-report
-        msg.channel.send(`Unknown MNRL player - please link your account. I'll send instructions in a DM`)
+        msg.channel.send(`Unknown MNRL player - please link your account. I'll send instructions in a DM.`)
         requestLinkAccount(msg.author)
       }
     }
