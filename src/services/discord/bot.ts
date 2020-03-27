@@ -29,6 +29,8 @@ client.on('message', async msg => {
       return requestLinkAccount(msg.author)
     }
   }
+
+  // handle channel-specific logic
   if (msg.channel.name === 'dev' || msg.channel.name === 'mncs-score-report') {
     /**
      * @done response/link handling
