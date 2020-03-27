@@ -66,7 +66,7 @@ export async function DiscordCallback(req: Request, res: Response, next: NextFun
     const members = await rlStats.get('members', { discord_id: user.id })
     // add user to spreadsheet
     await syncMembers(members, user)
-    return res.redirect('https://mncsstaff.wixsite.com/mnchampionshipseries')
+    return res.redirect(process.env.MNCS_SITE_URL)
   } catch (error) {
     return next(error)
   }
