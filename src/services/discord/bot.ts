@@ -89,6 +89,7 @@ client.on('message', async msg => {
           const username = await linkTeam(user, teamId)
           linked.push(username)
         }
+        msg.channel.send(`linked players: ${linked.join(', ')}`)
         break
       case '!link':
         requestLinkAccount(msg.author)

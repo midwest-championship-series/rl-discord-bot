@@ -23,11 +23,21 @@ const initialize = () => {
 const getRedirect = () => `${process.env.PROTOCOL}://${process.env.HOST}/api/v1/auth/discord/callback`
 const scope = 'identify connections'
 
-const syncMembers = (knownMembers, discordUser) => {
-  /** @todo handle members that are already linked */
-  const id = uuid()
+const syncMembers = async discordUser => {
+  const acceptedConnections = ['steam', 'xbox']
+  const members = await rlStats.get('members', { discord_id: discordUser.id })
+  let id = uuid()
+  if (members.length > 0) {
+    id = members[0].id
+  } else {
+    const players = await rlStats.get('players', { discord_id: discordUser.id })
+    if (players.length > 0) {
+      id = players[0].id
+    }
+  }
   const insert = discordUser.connections
-    .filter(c => c.type === 'steam' || c.type === 'xbox')
+    .filter(c => acceptedConnections.includes(c.type))
+    .filter(c => !members.some(m => m.platform === c.type && m.platform_id === c.id))
     .map(connection => ({
       id,
       discord_id: discordUser.id,
@@ -63,9 +73,8 @@ export async function DiscordCallback(req: Request, res: Response, next: NextFun
     // get user's discord info
     const user = await getUser(token.access_token)
     user.connections = await getConnections(token.access_token)
-    const members = await rlStats.get('members', { discord_id: user.id })
     // add user to spreadsheet
-    await syncMembers(members, user)
+    await syncMembers(user)
     return res.redirect(process.env.MNCS_SITE_URL)
   } catch (error) {
     return next(error)
