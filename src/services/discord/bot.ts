@@ -15,7 +15,7 @@ const requestLinkAccount = author => {
   let dm = ''
   dm += `In order to report games, you have to link your steam or xbox account to Discord, then go here: ${accountLinkURL} to link your Discord to MNRL.\n`
   dm += `You will be redirected to discordapp.com, which is Discord's website for authentication, to link your account to MNRL.\n`
-  dm += `Once you have done that (only one time required), please re-report your scores for MNCS stats processing.\n`
+  dm += `If you were trying to report scores, please re-report them for MNCS stats processing.\n`
   dm += `If you have any concerns, please reach out to Tero or the MNCS stats team in the MNRL or MNCS discords.`
   author.send(dm)
 }
@@ -54,6 +54,7 @@ client.on('message', async msg => {
     /**
      * @done response/link handling
      * @todo report game ids to service
+     * @todo error handling if report goes wrong
      * @todo validation on report message
      * @todo flexibility for message format
      * @todo figure out how to @ the user correctly
@@ -61,14 +62,16 @@ client.on('message', async msg => {
      */
     switch (command) {
       case '!report':
-        const urls = msg.content.slice(1).split(' ')
-        const gameIds = urls.map(
-          url =>
-            url
-              .split('?')[0]
-              .split('/')
-              .slice(-1)[0],
-        )
+        const gameIds = msg.content
+          .slice(1)
+          .split(' ')
+          .map(
+            url =>
+              url
+                .split('?')[0]
+                .split('/')
+                .slice(-1)[0],
+          )
         // find out if user has a linked account
         const members = await rlStats.get('members', { discord_id: msg.author.id })
         if (members && members.length > 0) {
