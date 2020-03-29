@@ -23,9 +23,9 @@ const put = (table: string, body: any) => {
 
 const report = (gameIds, reporterDiscordId) => {
   return request({
-    method: 'PUT',
+    method: 'POST',
     url: [baseUrl, 'games', '_report'].join('/'),
-    body: { game_ids: gameIds },
+    body: { game_ids: gameIds, reporter_discord_id: reporterDiscordId },
   })
 }
 
