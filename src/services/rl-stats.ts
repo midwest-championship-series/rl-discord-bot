@@ -21,11 +21,12 @@ const put = (table: string, body: any) => {
   })
 }
 
-const report = (gameIds, reporterDiscordId) => {
+const report = (gameIds: string[]) => {
+  console.log('reporting games: ', gameIds.join(', '))
   return request({
     method: 'POST',
     url: [baseUrl, 'games', '_report'].join('/'),
-    body: { game_ids: gameIds, reporter_discord_id: reporterDiscordId },
+    body: { game_ids: gameIds },
   })
 }
 
