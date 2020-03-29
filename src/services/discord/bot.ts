@@ -84,6 +84,7 @@ client.on('message', async msg => {
             )
           } catch (err) {
             console.error(err)
+            msg.channel.send(err.body.error)
           }
         } else {
           // ask user to link account and re-report
