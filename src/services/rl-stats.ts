@@ -23,6 +23,7 @@ const put = (table: string, body: any) => {
 
 const report = (gameIds: string[]) => {
   console.log('reporting games: ', gameIds.join(', '))
+  console.log({ game_ids: gameIds })
   return request({
     method: 'POST',
     url: [baseUrl, 'games', '_report'].join('/'),

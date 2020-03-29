@@ -64,8 +64,8 @@ client.on('message', async msg => {
     switch (command) {
       case '!report':
         const gameIds = msg.content
-          .slice(1)
           .split(' ')
+          .slice(1)
           .map(
             url =>
               url
