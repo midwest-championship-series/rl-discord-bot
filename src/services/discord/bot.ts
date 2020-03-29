@@ -76,11 +76,15 @@ client.on('message', async msg => {
         // find out if user has a linked account
         const members = await rlStats.get('members', { discord_id: msg.author.id })
         if (members && members.length > 0) {
-          // report scores
-          const { recorded_ids } = await rlStats.report(gameIds, msg.author.id)
-          msg.channel.send(
-            `Thank you for the report, @${msg.author.username}!\nGames reported: ${recorded_ids.join(', ')}`,
-          )
+          try {
+            // report scores
+            const { recorded_ids } = await rlStats.report(gameIds, msg.author.id)
+            msg.channel.send(
+              `Thank you for the report, @${msg.author.username}!\nGames reported: ${recorded_ids.join(', ')}`,
+            )
+          } catch (err) {
+            console.error(err)
+          }
         } else {
           // ask user to link account and re-report
           msg.channel.send(`Unknown MNRL player - please link your account. I'll send instructions in a DM.`)
