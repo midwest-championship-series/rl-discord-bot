@@ -21,13 +21,21 @@ const put = (table: string, body: any) => {
   })
 }
 
-const report = (gameIds: string[]) => {
-  console.log('reporting games: ', gameIds.join(', '))
-  console.log({ game_ids: gameIds })
+const report = ({ matchId, gameIds }: { gameIds?: string[]; matchId?: string }) => {
+  const body: any = {}
+  if (gameIds) {
+    console.log(`reporting games: ${gameIds.join(', ')}`)
+    body.game_ids = gameIds
+  } else if (matchId) {
+    console.log(`reporting match: ${matchId}`)
+    body.match_id = matchId
+  } else {
+    throw new Error('no game ids or match id to report')
+  }
   return request({
     method: 'POST',
     url: [baseUrl, 'games', '_report'].join('/'),
-    body: { game_ids: gameIds },
+    body,
   })
 }
 

@@ -78,7 +78,7 @@ client.on('message', async msg => {
         if (members && members.length > 0) {
           try {
             // report scores
-            const { recorded_ids } = await rlStats.report(gameIds, msg.author.id)
+            const { recorded_ids } = await rlStats.report({ gameIds }, msg.author.id)
             msg.channel.send(
               `Thank you for the report, @${msg.author.username}!\nGames reported: ${recorded_ids.join(', ')}`,
             )
@@ -90,6 +90,40 @@ client.on('message', async msg => {
           // ask user to link account and re-report
           msg.channel.send(`Unknown MNRL player - please link your account. I'll send instructions in a DM.`)
           requestLinkAccount(msg.author)
+        }
+        break
+      case '!reprocess':
+        if (msg.mentions.roles.size === 2) {
+          const teamIds = []
+          for (let [id] of msg.mentions.roles) {
+            teamIds.push(id)
+            // push ids to array
+            // find the match that is being referenced
+            // call the report endpoint
+          }
+          const teams = (await rlStats.get('teams')).filter(t => teamIds.includes(t.discord_id))
+          if (!teams.length === 2) return msg.channel.send('did not find 2 teams')
+          const [match] = (await rlStats.get('schedule')).filter(m =>
+            [m.team_1_id, m.team_2_id].every(id => teams.map(t => t.id).includes(id)),
+          )
+          if (!match) {
+            return msg.channel.send('no match found for mentioned teams')
+          } else {
+            try {
+              await rlStats.report({ matchId: match.id })
+              msg.channel.send(`successfully reprocessed match: ${match.id} ${teams[0].name} vs ${teams[1].name}`)
+            } catch (err) {
+              console.error(err)
+              msg.channel.send(err.body.error)
+            }
+          }
+        } else if (msg.content.includes('all')) {
+          msg.channel.send('reprocess all not yet implemented')
+          // get list of all matches
+          // loop through each match and call report endpoint
+          // report to channel how many games were processed
+        } else {
+          msg.channel.send('i did not understand what to do')
         }
         break
       case '!linkteam':
