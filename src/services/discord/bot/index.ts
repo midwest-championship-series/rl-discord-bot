@@ -12,16 +12,23 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`)
 })
 
+const operationChannels = {
+  dev: ['dev'],
+  prod: ['mncs-score-report'],
+}
+
 client.on('message', async msg => {
   try {
     const [command] = msg.content.split(' ')
     // handle dm messages
-    if (!msg.channel.name) {
-      await dm(msg)
+    if (process.env.MNRL_ENV === 'prod') {
+      if (!msg.channel.name) {
+        await dm(msg)
+      }
     }
 
     // handle channel messages
-    if (msg.channel.name === 'dev' || msg.channel.name === 'mncs-score-report') {
+    if (operationChannels[process.env.MNRL_ENV].includes(msg.channel.name)) {
       switch (command) {
         case '!report':
           await report(msg)
