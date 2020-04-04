@@ -2,14 +2,14 @@ import request from '../utils/request'
 
 const baseUrl = process.env.RL_STATS_URL
 
-const auth = { bearer: process.env.RL_STATS_SECRET }
-
 const get = (table: string, query: any = {}) => {
   return request({
     method: 'GET',
     url: [baseUrl, 'api', table].join('/'),
     qs: query,
-    // auth,
+    headers: {
+      'x-api-key': process.env.RL_STATS_KEY,
+    },
   })
 }
 
@@ -18,6 +18,9 @@ const put = (table: string, body: any) => {
     method: 'PUT',
     url: [baseUrl, 'api', table].join('/'),
     body,
+    headers: {
+      'x-api-key': process.env.RL_STATS_KEY,
+    },
   })
 }
 
@@ -36,6 +39,9 @@ const report = ({ matchId, gameIds }: { gameIds?: string[]; matchId?: string }) 
     method: 'POST',
     url: [baseUrl, 'games', '_report'].join('/'),
     body,
+    headers: {
+      'x-api-key': process.env.RL_STATS_KEY,
+    },
   })
 }
 
