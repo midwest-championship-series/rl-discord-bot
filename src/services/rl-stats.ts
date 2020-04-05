@@ -45,4 +45,15 @@ const report = ({ matchId, gameIds }: { gameIds?: string[]; matchId?: string }) 
   })
 }
 
-export default { get, put, report }
+const reprocess = (params: any) => {
+  return request({
+    method: 'POST',
+    url: [baseUrl, 'games', '_reprocess'].join('/'),
+    qs: params,
+    headers: {
+      'x-api-key': process.env.RL_STATS_KEY,
+    },
+  })
+}
+
+export default { get, put, report, reprocess }

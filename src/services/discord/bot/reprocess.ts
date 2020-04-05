@@ -22,13 +22,20 @@ const reprocess = async msg => {
         msg.channel.send(err.body.error)
       }
     }
-  } else if (msg.content.includes('all')) {
-    msg.channel.send('reprocess all not yet implemented')
-    // get list of all matches
-    // loop through each match and call report endpoint
-    // report to channel how many games were processed
   } else {
-    msg.channel.send('i did not understand what to do')
+    // e.g. !reprocess week:1 season:1
+    const params = msg.content
+      .split(' ')
+      .slice(1)
+      .reduce((result, param) => {
+        const [key, value] = param.split(':')
+        return {
+          ...result,
+          [key]: value,
+        }
+      }, {})
+    const { messages } = await rlStats.reprocess(params)
+    msg.channel.send(`queued ${messages.length} matches for reprocessing`)
   }
 }
 
