@@ -1,6 +1,6 @@
-const uuid = require('uuid')
+import { v4 as uuid } from 'uuid'
 
-const rlStats = require('../../rl-stats')
+import rlStats from '../../rl-stats'
 
 const linkPlayer = async (user, teamDiscordId) => {
   const registeredPlayers = await rlStats.get('players', { discord_id: user.id })

@@ -4,7 +4,8 @@ import * as Discord from 'discord.js'
 import linkTeam from './linkteam'
 import reprocess from './reprocess'
 import report from './report'
-import dm from './dm'
+import audit from './audit'
+import dm, { requestLinkAccount } from './dm'
 
 const client: any = new Discord.Client()
 
@@ -38,6 +39,9 @@ client.on('message', async msg => {
           break
         case '!linkteam':
           await linkTeam(msg)
+          break
+        case '!audit':
+          await audit(msg)
           break
         case '!link':
           requestLinkAccount(msg.author)
