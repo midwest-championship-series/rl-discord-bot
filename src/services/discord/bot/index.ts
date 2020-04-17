@@ -30,6 +30,7 @@ client.on('message', async msg => {
 
     // handle channel messages
     if (operationChannels[process.env.MNRL_ENV].includes(msg.channel.name)) {
+      console.log('processing command', command)
       switch (command) {
         case '!report':
           await report(msg)
