@@ -15,7 +15,7 @@ client.on('ready', () => {
 
 const operationChannels = {
   dev: ['dev'],
-  prod: ['mncs-score-report'],
+  prod: ['mncs-score-report', 'clmn-score-report'],
 }
 
 client.on('message', async msg => {

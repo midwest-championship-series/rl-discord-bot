@@ -17,7 +17,7 @@ const audit = async msg => {
     .filter(match => !reportedMatches.includes(match.id))
     .map(match => `${match.team_1_name} vs ${match.team_2_name}`)
   let response = ``
-  response += `there are ${unreported.length} unreported matches for those criteria.`
+  response += `There are ${unreported.length} unreported matches for those criteria.`
   if (unreported.length < 10) {
     response += ` Matches needing reports are:\n`
     response += unreported.join('\n')
