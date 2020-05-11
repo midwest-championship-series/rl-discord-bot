@@ -8,17 +8,22 @@ const linkPlayer = async (user, teamDiscordId) => {
   if (registeredPlayers.length > 0) return console.log('not going to add duplicates') // don't re-link a player
   const members = await rlStats.get('members', { discord_id: user.id })
   const id = members.length > 0 ? members[0].id : uuid()
-  const res = await rlStats.put('players', {
-    players: [
-      {
-        id,
-        discord_id: user.id,
-        team_id: team.id,
-        screen_name: user.username,
-      },
-    ],
-  })
-  return res[0].screen_name
+  try {
+    const res = await rlStats.put('players', {
+      players: [
+        {
+          id,
+          discord_id: user.id,
+          team_id: team.id,
+          screen_name: user.username,
+        },
+      ],
+    })
+    return res[0].screen_name
+  } catch (err) {
+    console.error(err)
+    return `error adding: ${user.screen_name}`
+  }
 }
 
 const linkTeam = async msg => {

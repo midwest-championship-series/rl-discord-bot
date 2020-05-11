@@ -5,7 +5,7 @@ const baseUrl = process.env.RL_STATS_URL
 const get = (table: string, query: any = {}) => {
   return request({
     method: 'GET',
-    url: [baseUrl, 'api', table].join('/'),
+    url: [baseUrl, 'v1', table].join('/'),
     qs: query,
     headers: {
       'x-api-key': process.env.RL_STATS_KEY,
@@ -16,7 +16,7 @@ const get = (table: string, query: any = {}) => {
 const put = (table: string, body: any) => {
   return request({
     method: 'PUT',
-    url: [baseUrl, 'api', table].join('/'),
+    url: [baseUrl, 'v1', table].join('/'),
     body,
     headers: {
       'x-api-key': process.env.RL_STATS_KEY,
