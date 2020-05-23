@@ -8,15 +8,30 @@ import audit from './audit'
 import dm, { requestLinkAccount } from './dm'
 
 const client: any = new Discord.Client()
+const channelMap = {
+  dev: {
+    name: 'mncs',
+  },
+  'mncs-score-report': {
+    name: 'mncs',
+  },
+  'clmn-score-report': {
+    name: 'clmn',
+  },
+}
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`)
 })
 
 const operationChannels = {
-  dev: ['dev'],
-  prod: ['mncs-score-report', 'clmn-score-report'],
+  dev: [{ channelName: 'dev', league: { name: 'mncs' } }],
+  prod: [
+    { channelName: 'mncs-score-report', league: { name: 'mncs' } },
+    { channelName: 'clmn-score-report', league: { name: 'clmn' } },
+  ],
 }
+const handlerChannels = operationChannels[process.env.MNRL_ENV]
 
 client.on('message', async msg => {
   try {
@@ -29,7 +44,9 @@ client.on('message', async msg => {
     }
 
     // handle channel messages
-    if (operationChannels[process.env.MNRL_ENV].includes(msg.channel.name)) {
+    const handler = handlerChannels.find(c => c.channelName === msg.channel.name)
+    if (handler) {
+      msg.league = handler.league
       console.log('processing command', command)
       switch (command) {
         case '!report':
