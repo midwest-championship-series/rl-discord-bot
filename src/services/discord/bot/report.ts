@@ -1,5 +1,4 @@
 import rlStats from '../../rl-stats'
-import { requestLinkAccount } from './dm'
 
 /**
  * @todo error handling if report goes wrong

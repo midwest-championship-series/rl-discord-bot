@@ -16,7 +16,9 @@ const reprocess = async msg => {
     } else {
       try {
         await rlStats.report({ matchId: match.id })
-        msg.channel.send(`successfully reprocessed match: ${match.id} ${teams[0].name} vs ${teams[1].name}`)
+        const message = `successfully reprocessed match: ${match.id} ${teams[0].name} vs ${teams[1].name}`
+        console.info(message)
+        msg.channel.send(message)
       } catch (err) {
         console.error(err)
         msg.channel.send(err.body.error)
@@ -35,7 +37,9 @@ const reprocess = async msg => {
         }
       }, {})
     const { messages } = await rlStats.reprocess(params)
-    msg.channel.send(`queued ${messages.length} matches for reprocessing`)
+    const message = `queued ${messages.length} matches for reprocessing`
+    console.info(message)
+    msg.channel.send(message)
   }
 }
 

@@ -41,7 +41,7 @@ export const request = (inputOptions: EdjiRequestOptions) => {
               url: options.url.toString(),
               method: options.method,
               body,
-              statusCode: res.statusCode,
+              statusCode: res && res.statusCode,
               retryCount: retryCount,
             }),
           )
