@@ -2,10 +2,10 @@ import request from '../utils/request'
 
 const baseUrl = process.env.RL_STATS_URL
 
-const get = (table: string, query: any = {}) => {
+const get = (resource: string, query: any = {}) => {
   return request({
     method: 'GET',
-    url: [baseUrl, 'v2', table].join('/'),
+    url: [baseUrl, 'v2', resource].join('/'),
     qs: query,
     headers: {
       'x-api-key': process.env.RL_STATS_KEY,
@@ -13,10 +13,21 @@ const get = (table: string, query: any = {}) => {
   })
 }
 
-const put = (table: string, body: any) => {
+const put = (resource: string, body: any) => {
   return request({
     method: 'PUT',
-    url: [baseUrl, 'v2', table].join('/'),
+    url: [baseUrl, 'v2', resource].join('/'),
+    body,
+    headers: {
+      'x-api-key': process.env.RL_STATS_KEY,
+    },
+  })
+}
+
+const post = (resource: string, body: any) => {
+  return request({
+    method: 'POST',
+    url: [baseUrl, 'v2', resource].join('/'),
     body,
     headers: {
       'x-api-key': process.env.RL_STATS_KEY,
@@ -56,4 +67,4 @@ const reprocess = (params: any) => {
   })
 }
 
-export default { get, put, report, reprocess }
+export default { get, put, post, report, reprocess }
