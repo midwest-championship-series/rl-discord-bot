@@ -50,7 +50,7 @@ client.on('message', async msg => {
       console.log('processing command', command)
       switch (command) {
         case '!report':
-          await report(msg)
+          await report(msg, handler.league)
           break
         case '!reprocess':
           await reprocess(msg)

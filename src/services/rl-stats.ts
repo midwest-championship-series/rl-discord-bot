@@ -35,20 +35,15 @@ const post = (resource: string, body: any) => {
   })
 }
 
-const report = ({ matchId, gameIds }: { gameIds?: string[]; matchId?: string }) => {
-  const body: any = {}
-  if (gameIds) {
-    console.log(`reporting games: ${gameIds.join(', ')}`)
-    body.game_ids = gameIds
-  } else if (matchId) {
-    console.log(`reporting match: ${matchId}`)
-    body.match_id = matchId
-  } else {
-    throw new Error('no game ids or match id to report')
+const report = ({ gameIds, leagueId }: { gameIds: string[]; leagueId: string }) => {
+  const body = {
+    game_ids: gameIds,
+    league_id: leagueId,
   }
+  console.log(`reporting games: ${gameIds.join(', ')}`)
   return request({
     method: 'POST',
-    url: [baseUrl, 'games', '_report'].join('/'),
+    url: [baseUrl, 'platform', 'games', '_report'].join('/'),
     body,
     headers: {
       'x-api-key': process.env.RL_STATS_KEY,
@@ -56,10 +51,10 @@ const report = ({ matchId, gameIds }: { gameIds?: string[]; matchId?: string }) 
   })
 }
 
-const reprocess = (params: any) => {
+const reprocess = (collection: string, params: any) => {
   return request({
     method: 'POST',
-    url: [baseUrl, 'games', '_reprocess'].join('/'),
+    url: [baseUrl, 'platform', collection, '_reprocess'].join('/'),
     qs: params,
     headers: {
       'x-api-key': process.env.RL_STATS_KEY,
