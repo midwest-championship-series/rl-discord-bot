@@ -67,6 +67,7 @@ client.on('message', async msg => {
       }
     }
   } catch (err) {
+    console.error(err)
     if (msg.channel && msg.channel.name) {
       msg.channel.send(err.message)
     } else {
