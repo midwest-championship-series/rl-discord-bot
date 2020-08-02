@@ -56,7 +56,10 @@ client.on('message', async msg => {
           await reprocess(msg)
           break
         case '!linkteam':
-          await linkTeam(msg)
+          await linkTeam(command)(msg)
+          break
+        case '!unlinkteam':
+          await linkTeam(command)(msg)
           break
         case '!audit':
           await audit(msg)
