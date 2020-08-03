@@ -8,7 +8,7 @@ import rlStats from '../../rl-stats'
  * @todo link w/o displaying full link
  */
 
-const report = async msg => {
+const report = async (msg, league) => {
   const gameIds = msg.content
     .split(' ')
     .slice(1)
@@ -22,7 +22,8 @@ const report = async msg => {
   // find out if user has a linked account
   try {
     // report scores
-    const { recorded_ids } = await rlStats.report({ gameIds })
+    const [{ _id: leagueId }] = await rlStats.get('leagues', { name: league.name })
+    const { recorded_ids } = await rlStats.report({ gameIds, leagueId })
     msg.channel.send(`Thank you for the report, @${msg.author.username}!\nGames reported: ${recorded_ids.join(', ')}`)
   } catch (err) {
     console.error(err)

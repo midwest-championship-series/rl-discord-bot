@@ -3,7 +3,6 @@ import { create, ModuleOptions } from 'simple-oauth2'
 
 import rlStats from '../../../services/rl-stats'
 import { getConnections, getUser } from '../../../services/discord'
-import { v4 as uuid } from 'uuid'
 
 // Initialize the OAuth2 Library
 const initialize = () => {
@@ -20,32 +19,33 @@ const initialize = () => {
   }
   return create(credentials)
 }
-const getRedirect = () => `${process.env.PROTOCOL}://${process.env.HOST}/api/v1/auth/discord/callback`
-const scope = 'identify connections'
 
-const syncMembers = async discordUser => {
+const scope = 'identify connections'
+const getRedirect = () => `${process.env.PROTOCOL}://${process.env.HOST}/api/v1/auth/discord/callback`
+
+const syncPlayers = async discordUser => {
   const acceptedConnections = ['steam', 'xbox']
-  const members = await rlStats.get('members', { discord_id: discordUser.id })
-  let id = uuid()
-  if (members.length > 0) {
-    id = members[0].id
-  } else {
-    const players = await rlStats.get('players', { discord_id: discordUser.id })
-    if (players.length > 0) {
-      id = players[0].id
-    }
-  }
-  const insert = discordUser.connections
+  const players = await rlStats.get('players', { discord_id: discordUser.id })
+  if (players.length > 1) throw new Error(`multiple players linked with discord id: ${discordUser.id}`)
+  const accounts = discordUser.connections
     .filter(c => acceptedConnections.includes(c.type))
-    .filter(c => !members.some(m => m.platform === c.type && m.platform_id === c.id))
-    .map(connection => ({
-      id,
-      discord_id: discordUser.id,
-      platform: connection.type,
-      platform_id: connection.id,
+    .map(c => ({ platform: c.type, platform_id: c.id }))
+
+  if (!players[0]) {
+    return rlStats.post('players', {
       screen_name: discordUser.username,
-    }))
-  return rlStats.put('members', { members: insert })
+      discord_id: discordUser.id,
+      accounts,
+    })
+  }
+
+  const player = players[0]
+  console.log(player)
+  const uniqueAccounts = accounts.filter(
+    a => !player.accounts.some(b => a.platform === b.platform && a.platform_id === b.platform_id),
+  ) // remove connections already known
+  const allAccounts = player.accounts.concat(uniqueAccounts)
+  return rlStats.put(`/players/${player._id}`, { accounts: allAccounts })
 }
 
 export function DiscordRedirect(req: Request, res: Response, next: NextFunction): void {
@@ -74,7 +74,7 @@ export async function DiscordCallback(req: Request, res: Response, next: NextFun
     const user = await getUser(token.access_token)
     user.connections = await getConnections(token.access_token)
     // add user to spreadsheet
-    await syncMembers(user)
+    await syncPlayers(user)
     return res.redirect(process.env.MNCS_SITE_URL)
   } catch (error) {
     return next(error)

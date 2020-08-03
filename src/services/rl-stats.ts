@@ -2,10 +2,10 @@ import request from '../utils/request'
 
 const baseUrl = process.env.RL_STATS_URL
 
-const get = (table: string, query: any = {}) => {
+const get = (resource: string, query: any = {}) => {
   return request({
     method: 'GET',
-    url: [baseUrl, 'v1', table].join('/'),
+    url: [baseUrl, 'v2', resource].join('/'),
     qs: query,
     headers: {
       'x-api-key': process.env.RL_STATS_KEY,
@@ -13,10 +13,10 @@ const get = (table: string, query: any = {}) => {
   })
 }
 
-const put = (table: string, body: any) => {
+const put = (resource: string, body: any) => {
   return request({
     method: 'PUT',
-    url: [baseUrl, 'v1', table].join('/'),
+    url: [baseUrl, 'v2', resource].join('/'),
     body,
     headers: {
       'x-api-key': process.env.RL_STATS_KEY,
@@ -24,20 +24,26 @@ const put = (table: string, body: any) => {
   })
 }
 
-const report = ({ matchId, gameIds }: { gameIds?: string[]; matchId?: string }) => {
-  const body: any = {}
-  if (gameIds) {
-    console.log(`reporting games: ${gameIds.join(', ')}`)
-    body.game_ids = gameIds
-  } else if (matchId) {
-    console.log(`reporting match: ${matchId}`)
-    body.match_id = matchId
-  } else {
-    throw new Error('no game ids or match id to report')
+const post = (resource: string, body: any) => {
+  return request({
+    method: 'POST',
+    url: [baseUrl, 'v2', resource].join('/'),
+    body,
+    headers: {
+      'x-api-key': process.env.RL_STATS_KEY,
+    },
+  })
+}
+
+const report = ({ gameIds, leagueId }: { gameIds: string[]; leagueId: string }) => {
+  const body = {
+    game_ids: gameIds,
+    league_id: leagueId,
   }
+  console.log(`reporting games: ${gameIds.join(', ')}`)
   return request({
     method: 'POST',
-    url: [baseUrl, 'games', '_report'].join('/'),
+    url: [baseUrl, 'platform', 'games', '_report'].join('/'),
     body,
     headers: {
       'x-api-key': process.env.RL_STATS_KEY,
@@ -45,10 +51,10 @@ const report = ({ matchId, gameIds }: { gameIds?: string[]; matchId?: string }) 
   })
 }
 
-const reprocess = (params: any) => {
+const reprocess = (collection: string, params: any) => {
   return request({
     method: 'POST',
-    url: [baseUrl, 'games', '_reprocess'].join('/'),
+    url: [baseUrl, 'platform', collection, '_reprocess'].join('/'),
     qs: params,
     headers: {
       'x-api-key': process.env.RL_STATS_KEY,
@@ -56,4 +62,4 @@ const reprocess = (params: any) => {
   })
 }
 
-export default { get, put, report, reprocess }
+export default { get, put, post, report, reprocess }

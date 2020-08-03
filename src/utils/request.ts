@@ -16,7 +16,7 @@ export class EdjiRequestError extends Error {
     retryCount?: number
   }) {
     super(info.message)
-    this.name = 'EDJI_REQUEST_ERROR'
+    this.name = 'RL_STATS_REQUEST_ERROR'
     Object.assign(this, info)
   }
 }
