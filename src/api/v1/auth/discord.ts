@@ -12,7 +12,7 @@ const initialize = () => {
       secret: process.env.DISCORD_CLIENT_SECRET,
     },
     auth: {
-      tokenHost: 'https://discordapp.com',
+      tokenHost: 'https://discord.com',
       authorizePath: '/api/oauth2/authorize',
       tokenPath: '/api/oauth2/token',
     },
@@ -40,7 +40,6 @@ const syncPlayers = async discordUser => {
   }
 
   const player = players[0]
-  console.log(player)
   const uniqueAccounts = accounts.filter(
     a => !player.accounts.some(b => a.platform === b.platform && a.platform_id === b.platform_id),
   ) // remove connections already known
