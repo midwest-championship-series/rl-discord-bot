@@ -1,6 +1,6 @@
 import request from '../../utils/request'
 
-const baseUrl = 'https://discordapp.com/api'
+const baseUrl = 'https://discord.com/api'
 
 /**
  * Gets a user's Discord identity
