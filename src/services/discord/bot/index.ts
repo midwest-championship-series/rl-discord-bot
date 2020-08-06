@@ -6,7 +6,7 @@ import reprocess from './reprocess'
 import report from './report'
 import audit from './audit'
 import dm, { requestLinkAccount } from './dm'
-import createTeam from './createteam'
+import createTeams from './createteams'
 
 const client: any = new Discord.Client()
 const channelMap = {
@@ -65,8 +65,8 @@ client.on('message', async msg => {
         case '!audit':
           await audit(msg)
           break
-        case '!createteam':
-          await createTeam(msg)
+        case '!createteams':
+          await createTeams(msg)
           break
         case '!link':
           requestLinkAccount(msg.author)
