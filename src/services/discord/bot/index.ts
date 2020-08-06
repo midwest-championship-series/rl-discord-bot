@@ -8,18 +8,7 @@ import audit from './audit'
 import dm, { requestLinkAccount } from './dm'
 import createTeams from './createteams'
 
-const client: any = new Discord.Client()
-const channelMap = {
-  dev: {
-    name: 'mncs',
-  },
-  'mncs-score-report': {
-    name: 'mncs',
-  },
-  'clmn-score-report': {
-    name: 'clmn',
-  },
-}
+const client = new Discord.Client()
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`)

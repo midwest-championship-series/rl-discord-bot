@@ -17,8 +17,7 @@ let app = express()
 // middleware stack
 app.use(json({ limit: '20mb' }))
 app.get('/healthcheck', HealthCheckHandler)
-app.use('/api', APIRouter)
-app.use(SendRequest)
+app.use('/api', APIRouter, SendRequest)
 
 // error handling stack
 app.use(methodOverride())
