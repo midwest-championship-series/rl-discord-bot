@@ -22,10 +22,18 @@ const unlinkPlayer = async (player, team) => {
   return res.screen_name
 }
 
+const createPlayer = user =>
+  rlStats.post('players', {
+    screen_name: user.username,
+    discord_id: user.id,
+    accounts: [],
+  })
+
 const linkTeam = cmd => {
   const handler = cmd === '!linkteam' ? linkPlayer : unlinkPlayer
   return async msg => {
     const linked = []
+    const created = []
     // get the value of the first role mentioned
     const teamId = msg.mentions.roles.values().next().value.id
     const [team] = await rlStats.get('teams', { discord_id: teamId })
@@ -33,11 +41,15 @@ const linkTeam = cmd => {
     for (let [id, user] of msg.mentions.users) {
       const registeredPlayers = await rlStats.get('players', { discord_id: user.id })
       if (registeredPlayers.length > 1) throw new Error(`multiple players registered with discord id: ${user.id}`)
-      if (registeredPlayers.length < 1) throw new Error(`no player registered with discord id: ${user.id}`)
-      const username = await handler(registeredPlayers[0], team)
+      // if (registeredPlayers.length < 1) throw new Error(`no player registered with discord id: ${user.id}`)
+      const newPlayer = await createPlayer(user)
+      created.push(newPlayer.screen_name)
+      const username = await handler(registeredPlayers[0] || newPlayer, team)
       if (username) linked.push(username)
     }
-    msg.channel.send(`updated players: ${linked.join(', ')}`)
+    let message = `updated players: ${linked.join(', ')}`
+    if (created.length > 0) message += `\ncreated players: ${created.join(', ')}`
+    msg.channel.send(message)
   }
 }
 
