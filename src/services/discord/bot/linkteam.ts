@@ -4,7 +4,7 @@ const linkPlayer = async (player, team) => {
   const history = player.team_history
   // check if player is already active on the team
   if (history.find(item => item.team_id === team._id && !item.date_left)) {
-    throw new Error(`player is already linked: ${player.screen_name}`)
+    return player.screen_name
   }
   history.push({
     team_id: team._id,
