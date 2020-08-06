@@ -41,10 +41,12 @@ const linkTeam = cmd => {
     for (let [id, user] of msg.mentions.users) {
       const registeredPlayers = await rlStats.get('players', { discord_id: user.id })
       if (registeredPlayers.length > 1) throw new Error(`multiple players registered with discord id: ${user.id}`)
-      // if (registeredPlayers.length < 1) throw new Error(`no player registered with discord id: ${user.id}`)
-      const newPlayer = await createPlayer(user)
-      created.push(newPlayer.screen_name)
-      const username = await handler(registeredPlayers[0] || newPlayer, team)
+      if (registeredPlayers.length < 1) {
+        const newPlayer = await createPlayer(user)
+        created.push(newPlayer.screen_name)
+        registeredPlayers.push(newPlayer)
+      }
+      const username = await handler(registeredPlayers[0], team)
       if (username) linked.push(username)
     }
     let message = `updated players: ${linked.join(', ')}`
