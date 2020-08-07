@@ -7,6 +7,7 @@ const mncsErrorsChannel = '692994579305332806'
 
 router.post('/', async (req, res, next) => {
   const channel: any = await bot.channels.fetch(mncsErrorsChannel)
+  console.log(req.body)
   channel.send(req.body.error)
   res.status(200).send()
 })
