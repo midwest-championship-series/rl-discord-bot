@@ -11,7 +11,7 @@ router.post('/', async (req, res, next) => {
   if (error && error.length > 2000) {
     error = error.substring(0, 1999)
   }
-  channel.send(req.body.error)
+  channel.send(error)
   res.status(200).send()
 })
 
