@@ -2,6 +2,7 @@
 import * as Discord from 'discord.js'
 
 import linkTeam from './linkteam'
+import linkPlayer from './linkplayer'
 import reprocess from './reprocess'
 import report from './report'
 import audit from './audit'
@@ -50,6 +51,9 @@ client.on('message', async msg => {
           break
         case '!unlinkteam':
           await linkTeam(command)(msg)
+          break
+        case '!linkplayer':
+          await linkPlayer(msg)
           break
         case '!audit':
           await audit(msg)
