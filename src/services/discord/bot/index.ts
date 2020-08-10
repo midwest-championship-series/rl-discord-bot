@@ -25,6 +25,7 @@ const operationChannels = {
 const handlerChannels = operationChannels[process.env.MNRL_ENV]
 
 client.on('message', async msg => {
+  msg.content = msg.content.replace(/[\r\n]+/g, ' ')
   try {
     const [command] = msg.content.split(' ')
     // handle dm messages

@@ -3,7 +3,6 @@ import rlStats from '../../rl-stats'
 /**
  * @todo error handling if report goes wrong
  * @todo validation on report message
- * @todo flexibility for message format
  * @todo figure out how to @ the user correctly
  * @todo link w/o displaying full link
  */
@@ -19,7 +18,7 @@ const report = async (msg, league) => {
           .split('/')
           .slice(-1)[0],
     )
-  // find out if user has a linked account
+
   try {
     // report scores
     const [{ _id: leagueId }] = await rlStats.get('leagues', { name: league.name })
