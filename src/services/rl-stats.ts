@@ -10,6 +10,7 @@ const get = (resource: string, query: any = {}) => {
     headers: {
       'x-api-key': process.env.RL_STATS_KEY,
     },
+    retries: 3,
   })
 }
 
@@ -35,10 +36,19 @@ const post = (resource: string, body: any) => {
   })
 }
 
-const report = ({ gameIds, leagueId }: { gameIds: string[]; leagueId: string }) => {
+const report = ({
+  gameIds,
+  leagueId,
+  replyToChannel,
+}: {
+  gameIds: string[]
+  leagueId: string
+  replyToChannel: string
+}) => {
   const body = {
     game_ids: gameIds,
     league_id: leagueId,
+    reply_to_channel: replyToChannel,
   }
   console.log(`reporting games: ${gameIds.join(', ')}`)
   return request({
