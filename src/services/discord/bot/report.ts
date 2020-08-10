@@ -23,7 +23,7 @@ const report = async (msg, league) => {
     // report scores
     const [{ _id: leagueId }] = await rlStats.get('leagues', { name: league.name })
     const { recorded_ids } = await rlStats.report({ gameIds, leagueId })
-    msg.channel.send(`Thank you for the report, @${msg.author.username}!\nGames reported: ${recorded_ids.join(', ')}`)
+    msg.channel.send(`Thank you for the report, <@${msg.author.id}>!\nGames reported: ${recorded_ids.join(', ')}`)
   } catch (err) {
     console.error(err)
     if (err.body && err.body.error) {
