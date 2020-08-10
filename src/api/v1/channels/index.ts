@@ -12,7 +12,7 @@ router.post('/:channelId', async (req, res, next) => {
     message = message.substring(0, 1999)
   }
   channel.send(message)
-  res.status(200).send()
+  res.status(200).send({ success: true })
 })
 
 export default router
