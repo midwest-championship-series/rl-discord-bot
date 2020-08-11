@@ -42,7 +42,7 @@ const commands = [
 
 const configureActions = commandChannels => {
   client.on('message', async msg => {
-    msg.content = msg.content.replace(/[\r\n]+/g, ' ')
+    msg.content = msg.content.replace(/[\r\n]+/g, ' ').replace(/\s\s+/g, ' ')
     try {
       // handle dm messages
       if (process.env.MNRL_ENV === 'prod') {
