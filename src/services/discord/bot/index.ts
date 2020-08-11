@@ -8,74 +8,73 @@ import report from './report'
 import audit from './audit'
 import dm, { requestLinkAccount } from './dm'
 import createTeams from './createteams'
+import rlStats from '../../rl-stats'
+import checkPermissions from './permissions'
 
 const client = new Discord.Client()
 
-client.on('ready', () => {
+client.once('ready', async () => {
   console.log(`Logged in as ${client.user.tag}!`)
+  const leagues = await rlStats.get('leagues')
+  const operationChannels = leagues.reduce(
+    (result, league) => {
+      if (league.name === 'mncs') {
+        result.dev.push({ channelId: '692994579305332806', league })
+      }
+      result.prod = result.prod.concat(league.command_channel_ids.map(id => ({ channelId: id, league })))
+      return result
+    },
+    { dev: [], prod: [] },
+  )
+  configureActions(operationChannels[process.env.MNRL_ENV])
 })
 
-const operationChannels = {
-  dev: [{ channelName: 'dev', league: { name: 'mncs' } }],
-  prod: [
-    { channelName: 'mncs-score-report', league: { name: 'mncs' } },
-    { channelName: 'clmn-score-report', league: { name: 'clmn' } },
-  ],
+const commands = [
+  { command: 'link', handler: requestLinkAccount },
+  { command: 'report', handler: report },
+  { command: 'audit', handler: audit },
+  { command: 'reprocess', handler: reprocess, permissions: ['all-owner'] },
+  { command: 'linkteam', handler: linkTeam, permissions: ['all-owner'] },
+  { command: 'unlinkteam', handler: linkTeam, permissions: ['all-owner'] },
+  { command: 'linkplayer', handler: linkPlayer, permissions: ['all-owner'] },
+  { command: 'createteams', handler: createTeams, permissions: ['all-owner'] },
+]
+
+const configureActions = commandChannels => {
+  client.on('message', async msg => {
+    msg.content = msg.content.replace(/[\r\n]+/g, ' ')
+    try {
+      // handle dm messages
+      if (process.env.MNRL_ENV === 'prod') {
+        if (!msg.channel.name) {
+          await dm(msg)
+        }
+      }
+
+      // handle channel messages
+      const params = msg.content.split(' ')
+      const command = params.shift().split('!')[1]
+      const channel = commandChannels.find(c => c.channelId === msg.channel.id)
+      const controller = commands.find(cmd => cmd.command === command)
+      if (channel && controller) {
+        console.log('processing command', command)
+        if (controller.permissions) {
+          console.log('validating permissions')
+          await checkPermissions(msg.author.id, controller)
+        }
+        msg.league = channel.league
+        await controller.handler(command, params, msg)
+      }
+    } catch (err) {
+      console.error(err)
+      if (msg.channel && msg.channel.name) {
+        msg.channel.send(err.message)
+      } else {
+        msg.author.send(err.message)
+      }
+    }
+  })
 }
-const handlerChannels = operationChannels[process.env.MNRL_ENV]
-
-client.on('message', async msg => {
-  msg.content = msg.content.replace(/[\r\n]+/g, ' ')
-  try {
-    const [command] = msg.content.split(' ')
-    // handle dm messages
-    if (process.env.MNRL_ENV === 'prod') {
-      if (!msg.channel.name) {
-        await dm(msg)
-      }
-    }
-
-    // handle channel messages
-    const handler = handlerChannels.find(c => c.channelName === msg.channel.name)
-    if (handler) {
-      msg.league = handler.league
-      console.log('processing command', command)
-      switch (command) {
-        case '!report':
-          await report(msg, handler.league)
-          break
-        case '!reprocess':
-          await reprocess(msg)
-          break
-        case '!linkteam':
-          await linkTeam(command)(msg)
-          break
-        case '!unlinkteam':
-          await linkTeam(command)(msg)
-          break
-        case '!linkplayer':
-          await linkPlayer(msg)
-          break
-        case '!audit':
-          await audit(msg)
-          break
-        case '!createteams':
-          await createTeams(msg)
-          break
-        case '!link':
-          requestLinkAccount(msg.author)
-          break
-      }
-    }
-  } catch (err) {
-    console.error(err)
-    if (msg.channel && msg.channel.name) {
-      msg.channel.send(err.message)
-    } else {
-      msg.author.send(err.message)
-    }
-  }
-})
 
 client.login(process.env.DISCORD_BOT_SECRET)
 

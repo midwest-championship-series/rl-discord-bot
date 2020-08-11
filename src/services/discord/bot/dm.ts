@@ -8,7 +8,7 @@ export const requestLinkAccount = author => {
   author.send(dm)
 }
 
-export default async msg => {
+export default async (command, args, msg) => {
   if (msg.content === 'ping') {
     return msg.author.send('pong')
   } else if (msg.content.startsWith('!link')) {

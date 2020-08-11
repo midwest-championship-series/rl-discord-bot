@@ -1,12 +1,10 @@
 import rlStats from '../../../services/rl-stats'
 
-const linkPlayer = async msg => {
+const linkPlayer = async (command, args, msg) => {
   const platforms = ['xbox', 'ps4', 'steam']
   const user = msg.mentions.users.values().next().value
-  console.log('user', user)
   const { id, username, avatar } = user
-  const linkAccounts = msg.content
-    .split(' ')
+  const linkAccounts = args
     .filter(str => platforms.some(p => str.includes(p)))
     .map(acc => acc.split(':'))
     .map(acc => ({ platform: acc[0], platform_id: acc[1] }))

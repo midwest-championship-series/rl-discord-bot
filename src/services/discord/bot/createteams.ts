@@ -1,6 +1,6 @@
 import rlStats from '../../rl-stats'
 
-const createTeams = async msg => {
+const createTeams = async (command, args, msg) => {
   const allValues: Array<{ id: string; name: string }> = Array.from(msg.mentions.roles.values())
   for (const { id, name } of allValues) {
     if (!id || !name) throw new Error(`Error: no id or team name found for team: ${name}`)

@@ -1,8 +1,7 @@
 import rlStats from '../../rl-stats'
 
-const reprocess = async msg => {
+const reprocess = async (command, args, msg) => {
   // e.g. !reprocess week:1 season:1
-  const args = msg.content.split(' ').slice(1)
   const collection = args.shift()
   const params: string[] = args.reduce((result, param) => {
     const [key, value] = param.split(':')
