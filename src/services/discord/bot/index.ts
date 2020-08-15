@@ -33,11 +33,11 @@ const commands = [
   { command: 'link', handler: requestLinkAccount },
   { command: 'report', handler: report },
   { command: 'audit', handler: audit },
-  { command: 'reprocess', handler: reprocess, permissions: ['all-owner'] },
-  { command: 'linkteam', handler: linkTeam, permissions: ['all-owner'] },
-  { command: 'unlinkteam', handler: linkTeam, permissions: ['all-owner'] },
-  { command: 'linkplayer', handler: linkPlayer, permissions: ['all-owner'] },
-  { command: 'createteams', handler: createTeams, permissions: ['all-owner'] },
+  { command: 'reprocess', handler: reprocess, permissions: ['all-owner', 'all-manager'] },
+  { command: 'linkteam', handler: linkTeam, permissions: ['all-owner', 'all-manager'] },
+  { command: 'unlinkteam', handler: linkTeam, permissions: ['all-owner', 'all-manager'] },
+  { command: 'linkplayer', handler: linkPlayer, permissions: ['all-owner', 'all-manager'] },
+  { command: 'createteams', handler: createTeams, permissions: ['all-owner', 'all-manager'] },
 ]
 
 const configureActions = commandChannels => {
