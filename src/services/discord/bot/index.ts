@@ -10,6 +10,7 @@ import dm, { requestLinkAccount } from './dm'
 import createTeams from './createteams'
 import rlStats from '../../rl-stats'
 import checkPermissions from './permissions'
+import updateDoc from './update-doc'
 
 const client = new Discord.Client()
 
@@ -38,6 +39,7 @@ const commands = [
   { command: 'unlinkteam', handler: linkTeam, permissions: ['all-owner', 'all-manager'] },
   { command: 'linkplayer', handler: linkPlayer, permissions: ['all-owner', 'all-manager'] },
   { command: 'createteams', handler: createTeams, permissions: ['all-owner', 'all-manager'] },
+  { command: 'update', handler: updateDoc, permissions: ['all-owner', 'all-manager'] },
 ]
 
 const configureActions = commandChannels => {
