@@ -7,11 +7,17 @@ const router = Router()
 router.post('/:channelId', async (req, res, next) => {
   const { channelId } = req.params
   const channel: any = await bot.channels.fetch(channelId)
-  let message = req.body.message
-  if (message && message.length > 2000) {
-    message = message.substring(0, 1999)
+  let { message, embed } = req.body
+  if (message) {
+    if (message.length > 2000) {
+      message = message.substring(0, 1999)
+    }
+    channel.send(message)
   }
-  channel.send(message)
+  if (embed) {
+    embed.timestamp = new Date()
+    channel.send({ embed })
+  }
   res.status(200).send({ success: true })
 })
 
