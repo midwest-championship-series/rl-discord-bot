@@ -28,6 +28,7 @@ client.once('ready', async () => {
     },
     { dev: [], prod: [] },
   )
+  console.log('channel map', operationChannels[process.env.MNRL_ENV])
   configureActions(operationChannels[process.env.MNRL_ENV])
 })
 
