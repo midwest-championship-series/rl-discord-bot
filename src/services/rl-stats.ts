@@ -3,10 +3,14 @@ import request from '../utils/request'
 const baseUrl = process.env.RL_STATS_URL
 
 const get = (resource: string, query: any = {}) => {
+  let url = [baseUrl, 'v2', resource].join('/')
+  if (typeof query === 'string') {
+    url += `?${query}`
+  }
   return request({
     method: 'GET',
-    url: [baseUrl, 'v2', resource].join('/'),
-    qs: query,
+    url,
+    qs: typeof query === 'object' ? query : undefined,
     headers: {
       'x-api-key': process.env.RL_STATS_KEY,
     },

@@ -3,8 +3,6 @@ import { Updater } from './common'
 import playerUpdates from './players'
 import teamUpdates from './teams'
 
-// const argRegex = /[^\"\s]*:(("(.*?)")|[^\"\s]*)/g // keeping this here in case it's useful
-
 const updaters: { [key: string]: { [key: string]: Updater } } = {
   players: playerUpdates,
   teams: teamUpdates,
