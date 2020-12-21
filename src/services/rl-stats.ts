@@ -65,15 +65,30 @@ const report = ({
   })
 }
 
+const forfeit = (params: { leagueId: string; replyToChannel: string; forfeitTeam: any; matchId: string }) => {
+  const { leagueId, replyToChannel, forfeitTeam, matchId } = params
+  const body = {
+    league_id: leagueId,
+    reply_to_channel: replyToChannel,
+    forfeit_team_id: forfeitTeam._id,
+    match_id: matchId,
+  }
+  console.log(`reporting forfeit by ${forfeitTeam.name}`)
+  return request({
+    method: 'POST',
+    url: [baseUrl, 'platform', 'games', '_report'].join('/'),
+    body,
+    headers: { 'x-api-key': process.env.RL_STATS_KEY },
+  })
+}
+
 const reprocess = (collection: string, params: any) => {
   return request({
     method: 'POST',
     url: [baseUrl, 'platform', collection, '_reprocess'].join('/'),
     qs: params,
-    headers: {
-      'x-api-key': process.env.RL_STATS_KEY,
-    },
+    headers: { 'x-api-key': process.env.RL_STATS_KEY },
   })
 }
 
-export default { get, put, post, report, reprocess }
+export default { get, put, post, report, reprocess, forfeit }
