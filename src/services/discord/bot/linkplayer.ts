@@ -1,7 +1,7 @@
 import rlStats from '../../../services/rl-stats'
 
 const linkPlayer = async (command, args, msg) => {
-  const platforms = ['xbox', 'ps4', 'steam']
+  const platforms = ['xbox', 'ps4', 'steam', 'epic']
   const user = msg.mentions.users.values().next().value
   const { id, username, avatar } = user
   const linkAccounts = args
