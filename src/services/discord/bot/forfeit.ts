@@ -17,6 +17,7 @@ const forfeit = async (command, args, msg) => {
   }
 
   try {
+    const teamDiscordId = allRoles[0].id
     const league = await rlStats.get(`leagues/${leagueId}`, `populate=current_season.matches.teams`)
     const query = args
       .filter(a => a.includes(':'))
@@ -28,16 +29,18 @@ const forfeit = async (command, args, msg) => {
         },
         { status: 'open' },
       )
-    const matches = league.current_season.matches.filter(match => {
-      return Object.keys(query).every(key => match[key] == query[key])
-    })
+    const matches = league.current_season.matches
+      .filter(match => {
+        return Object.keys(query).every(key => match[key] == query[key])
+      })
+      .filter(match => match.teams.find(t => t.discord_id == teamDiscordId))
     if (matches.length !== 1) {
       let message = `expected to locate 1 match with query, but found ${matches.length}.\nquery:\n`
       message += JSON.stringify(query, null, 2)
       throw new Error(message)
     }
     const { winner, loser } = matches[0].teams.reduce((result, team) => {
-      if (team.discord_id == allRoles[0].id) {
+      if (team.discord_id == teamDiscordId) {
         result.loser = team
       } else {
         result.winner = team
