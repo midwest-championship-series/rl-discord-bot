@@ -1,13 +1,8 @@
 import rlStats from '../../rl-stats'
+import { createQuery } from '../../../utils/message-parse'
 
 const audit = async (command, args, msg) => {
-  const params = args.reduce((result, param) => {
-    const [key, value] = param.split(':')
-    return {
-      ...result,
-      [key]: value,
-    }
-  }, {})
+  const params = createQuery(args)
   const league = msg.league
   const currentSeason = await rlStats.get(`seasons/${league.current_season_id}`, { populate: ['matches.teams'] })
   const matches = currentSeason.matches.filter(match => Object.keys(params).every(p => match[p] == params[p]))

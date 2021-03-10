@@ -12,6 +12,7 @@ import rlStats from '../../rl-stats'
 import checkPermissions from './permissions'
 import updateDoc from './update-doc'
 import createDoc from './create-doc'
+import getDoc from './get-doc'
 import forfeit from './forfeit'
 
 const client = new Discord.Client()
@@ -42,6 +43,7 @@ const commands = [
   { command: 'unlinkteam', handler: linkTeam, permissions: ['all-owner', 'all-manager'] },
   { command: 'linkplayer', handler: linkPlayer, permissions: ['all-owner', 'all-manager'] },
   { command: 'createteams', handler: createTeams, permissions: ['all-owner', 'all-manager'] },
+  { command: 'get', handler: getDoc, permissions: ['all-owner', 'all-manager'] },
   { command: 'update', handler: updateDoc, permissions: ['all-owner', 'all-manager'] },
   { command: 'create', handler: createDoc, permissions: ['all-owner', 'all-manager'] },
   { command: 'ff', handler: forfeit, permissions: ['all-owner', 'all-manager'] },
