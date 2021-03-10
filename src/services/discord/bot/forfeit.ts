@@ -57,21 +57,6 @@ const forfeit = async (command, args, msg) => {
       throw err
     }
   }
-
-  // msg.channel.send('submitted match for forfeit')
-
-  // try {
-  //   // report scores
-  //   await rlStats.report({ leagueId, replyToChannel: msg.channel.id })
-  //   msg.channel.send(`Thank you for the report, <@${msg.author.id}>!`)
-  // } catch (err) {
-  //   console.error(err)
-  //   if (err.body && err.body.error) {
-  //     throw new Error(err.body.error)
-  //   } else {
-  //     throw err
-  //   }
-  // }
 }
 
 export default forfeit
