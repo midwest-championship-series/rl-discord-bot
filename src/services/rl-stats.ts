@@ -7,7 +7,6 @@ const get = (resource: string, query: any = {}) => {
   if (typeof query === 'string') {
     url += `?${query}`
   }
-  console.log(query)
   return request({
     method: 'GET',
     url,
