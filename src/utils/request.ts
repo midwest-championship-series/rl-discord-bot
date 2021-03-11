@@ -49,6 +49,9 @@ export const request = (inputOptions: EdjiRequestOptions) => {
       })
     }).catch(err => {
       if (retryCount >= options.retries || !options.retryOnStatusCodes.includes(err.statusCode)) {
+        if (err.body && err.body.message) {
+          err.message = err.body.message
+        }
         return Promise.reject(err)
       } else {
         retryCount++
