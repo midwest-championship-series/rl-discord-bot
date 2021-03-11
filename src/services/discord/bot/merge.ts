@@ -1,0 +1,38 @@
+import { createQuery } from '../../../utils/message-parse'
+import rlStats from '../../rl-stats'
+
+const mergePlayer = async (command, args, msg) => {
+  const allUsers: any[] = Array.from(msg.mentions.users.values())
+  if (allUsers.length > 1) {
+    throw new Error(`expected 1 user mention but got ${allUsers.length}`)
+  }
+  const queryArgs = args.filter(arg => arg.includes(':'))
+  const queryUsers = await rlStats.get('players', createQuery(queryArgs))
+  if (queryUsers.length !== 1) {
+    throw new Error(
+      `expected 1 player from query but got ${queryUsers.length}. Players: ${queryUsers
+        .map(p => p.screen_name)
+        .join(', ')}`,
+    )
+  }
+  const secondary = queryUsers[0]
+  const [primary] = await rlStats.get('players', { discord_id: allUsers[0].id })
+  // for (let account of secondary.accounts) {
+  const newAccounts = secondary.accounts.reduce((result, account) => {
+    const match = primary.accounts.find(
+      acc => acc.platform === account.platform && acc.platform_id === account.platform_id,
+    )
+    if (match) {
+      console.info('found matched acount - skipping')
+      return
+    }
+    console.info(`pushing new account: ${account.platform}:${account.platform_id}`)
+    result.push(account)
+    return result
+  }, [])
+  console.log(newAccounts)
+  await rlStats.put(`players/${primary._id}`, { accounts: primary.accounts.concat(newAccounts) })
+  await rlStats.del(`players/${secondary._id}`)
+}
+
+export default mergePlayer

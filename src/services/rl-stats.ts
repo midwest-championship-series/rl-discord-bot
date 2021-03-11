@@ -40,6 +40,16 @@ const post = (resource: string, body: any) => {
   })
 }
 
+const del = (resource: string) => {
+  return request({
+    method: 'DELETE',
+    url: [baseUrl, 'v2', resource].join('/'),
+    headers: {
+      'x-api-key': process.env.RL_STATS_KEY,
+    },
+  })
+}
+
 const report = ({
   gameIds,
   leagueId,
@@ -91,4 +101,4 @@ const reprocess = (collection: string, params: any) => {
   })
 }
 
-export default { get, put, post, report, reprocess, forfeit }
+export default { get, put, post, del, report, reprocess, forfeit }
