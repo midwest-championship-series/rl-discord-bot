@@ -16,21 +16,6 @@ const getDoc = async (command, args, msg) => {
     return msg.channel.send(`no ${model} results for query: ${JSON.stringify(query, null, 2)}`)
   }
   if (!pagedResults[page - 1]) throw new Error(`page:${page} does not exist`)
-  // const embed = createEmbed()
-  // embed.addFields(
-  //   pagedResults[page - 1].map((r, index) => {
-  //     return {
-  //       name: `${model}[${pageSize * (page - 1) + index}]`,
-  //       value: `\`\`\`${JSON.stringify(r, null, 2)}\`\`\``,
-  //     }
-  //   }),
-  // )
-  // embed.setDescription(
-  //   `Returning page ${page} of ${Math.ceil(
-  //     results.length / pageSize,
-  //   )} ${model}. To get next pages, add parameter page:<page number>`,
-  // )
-  // msg.channel.send(embed)
   const headerMessage = `Returning page ${page} of ${Math.ceil(
     results.length / pageSize,
   )} ${model}. To get next pages, add parameter page:<page number>`

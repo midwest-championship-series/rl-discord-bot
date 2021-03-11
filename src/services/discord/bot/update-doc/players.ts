@@ -10,6 +10,13 @@ const update: UpdateMap = {
     }
   },
   avatar: overwrite,
+  team_history: data => {
+    const [id, property, value] = data.value.split(',')
+    const team_history = data.doc.team_history
+    const historyToUpdate = team_history.find(h => h._id === id)
+    historyToUpdate[property] = value
+    return { team_history }
+  },
 }
 
 export default update
