@@ -14,6 +14,7 @@ import updateDoc from './update-doc'
 import createDoc from './create-doc'
 import getDoc from './get-doc'
 import forfeit from './forfeit'
+import mergePlayers from './merge'
 
 const client = new Discord.Client()
 
@@ -46,6 +47,7 @@ const commands = [
   { command: 'get', handler: getDoc, permissions: ['all-owner', 'all-manager'] },
   { command: 'update', handler: updateDoc, permissions: ['all-owner', 'all-manager'] },
   { command: 'create', handler: createDoc, permissions: ['all-owner', 'all-manager'] },
+  { command: 'merge', handler: mergePlayers, permissions: ['all-owner', 'all-manager'] },
   { command: 'ff', handler: forfeit, permissions: ['all-owner', 'all-manager'] },
 ]
 
