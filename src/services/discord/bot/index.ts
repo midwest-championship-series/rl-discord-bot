@@ -53,6 +53,7 @@ const commands = [
 
 const configureActions = commandChannels => {
   client.on('message', async msg => {
+    console.log('got message', msg.content)
     msg.content = msg.content.replace(/[\r\n]+/g, ' ').replace(/\s\s+/g, ' ')
     try {
       // handle dm messages
