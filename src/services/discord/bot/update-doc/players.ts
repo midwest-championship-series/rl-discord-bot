@@ -14,7 +14,11 @@ const update: UpdateMap = {
     const [id, property, value] = data.value.split(',')
     const team_history = data.doc.team_history
     const historyToUpdate = team_history.find(h => h._id === id)
-    historyToUpdate[property] = value
+    if (value === 'undefined') {
+      delete historyToUpdate[property]
+    } else {
+      historyToUpdate[property] = value
+    }
     return { team_history }
   },
 }

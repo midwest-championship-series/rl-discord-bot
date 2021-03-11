@@ -1,6 +1,6 @@
 import * as nodeRequest from 'request'
 
-export class EdjiRequestError extends Error {
+export class BotRequestError extends Error {
   url: string
   method: string
   body: any
@@ -33,7 +33,7 @@ export const request = (inputOptions: EdjiRequestOptions) => {
           return resolve(body)
         } else {
           return reject(
-            new EdjiRequestError({
+            new BotRequestError({
               message:
                 (err && err.message) ||
                 `error making ${options.method} request to ${options.url} failed with status code ${res &&
