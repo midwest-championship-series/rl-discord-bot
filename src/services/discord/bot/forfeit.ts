@@ -48,7 +48,7 @@ const forfeit = async (command, args, msg) => {
       return result
     }, {})
     msg.channel.send(`reporting forfeit. ${loser.name} forfeit to ${winner.name}`)
-    await rlStats.forfeit({ leagueId, replyToChannel: msg.channel.id, forfeitTeam: loser, matchId: matches[0]._id })
+    await rlStats.forfeit({ replyToChannel: msg.channel.id, forfeitTeam: loser, matchId: matches[0]._id })
   } catch (err) {
     console.error(err)
     if (err.body && err.body.error) {

@@ -75,18 +75,20 @@ const report = ({
   })
 }
 
-const forfeit = (params: { leagueId: string; replyToChannel: string; forfeitTeam: any; matchId: string }) => {
-  const { leagueId, replyToChannel, forfeitTeam, matchId } = params
+const forfeit = (params: { replyToChannel: string; forfeitTeam: any; matchId: string }) => {
+  const { replyToChannel, forfeitTeam, matchId } = params
   const body = {
-    league_id: leagueId,
-    reply_to_channel: replyToChannel,
-    forfeit_team_id: forfeitTeam._id,
-    match_id: matchId,
+    type: 'MATCH_REPORT_FORFEIT',
+    detail: {
+      reply_to_channel: replyToChannel,
+      forfeit_team_id: forfeitTeam._id,
+      match_id: matchId,
+    },
   }
   console.log(`reporting forfeit by ${forfeitTeam.name}`)
   return request({
     method: 'POST',
-    url: [baseUrl, 'platform', 'games', '_report'].join('/'),
+    url: [baseUrl, 'v2', 'events'].join('/'),
     body,
     headers: { 'x-api-key': process.env.RL_STATS_KEY },
   })
