@@ -60,14 +60,17 @@ const report = ({
   replyToChannel: string
 }) => {
   const body = {
-    game_ids: gameIds,
-    league_id: leagueId,
-    reply_to_channel: replyToChannel,
+    type: 'MATCH_REPORT_GAMES',
+    detail: {
+      game_ids: gameIds,
+      league_id: leagueId,
+      reply_to_channel: replyToChannel,
+    },
   }
   console.log(`reporting games: ${gameIds.join(', ')}`)
   return request({
     method: 'POST',
-    url: [baseUrl, 'platform', 'games', '_report'].join('/'),
+    url: [baseUrl, 'v2', 'events'].join('/'),
     body,
     headers: {
       'x-api-key': process.env.RL_STATS_KEY,
