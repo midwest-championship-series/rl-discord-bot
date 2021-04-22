@@ -50,24 +50,16 @@ const del = (resource: string) => {
   })
 }
 
-const report = ({
-  gameIds,
-  leagueId,
-  replyToChannel,
-}: {
-  gameIds: string[]
-  leagueId: string
-  replyToChannel: string
-}) => {
+const report = ({ urls, leagueId, replyToChannel }: { urls: string[]; leagueId: string; replyToChannel: string }) => {
   const body = {
-    type: 'MATCH_REPORT_GAMES',
+    type: 'MATCH_PROCESS_GAMES_REPORTED',
     detail: {
-      game_ids: gameIds,
+      urls,
       league_id: leagueId,
       reply_to_channel: replyToChannel,
     },
   }
-  console.log(`reporting games: ${gameIds.join(', ')}`)
+  console.log(`reporting games: ${urls.join(', ')}`)
   return request({
     method: 'POST',
     url: [baseUrl, 'v2', 'events'].join('/'),
@@ -81,7 +73,7 @@ const report = ({
 const forfeit = (params: { replyToChannel: string; forfeitTeam: any; matchId: string }) => {
   const { replyToChannel, forfeitTeam, matchId } = params
   const body = {
-    type: 'MATCH_REPORT_FORFEIT',
+    type: 'MATCH_PROCESS_FORFEIT_REPORTED',
     detail: {
       reply_to_channel: replyToChannel,
       forfeit_team_id: forfeitTeam._id,

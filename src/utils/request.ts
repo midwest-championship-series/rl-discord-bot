@@ -21,7 +21,7 @@ export class BotRequestError extends Error {
   }
 }
 
-const defaultOptions: Partial<EdjiRequestOptions> = { retries: 0, retryOnStatusCodes: [502, 503], json: true }
+const defaultOptions: Partial<EdjiRequestOptions> = { retries: 1, retryOnStatusCodes: [500, 502, 503], json: true }
 
 export const request = (inputOptions: EdjiRequestOptions) => {
   const options = { ...defaultOptions, ...inputOptions }

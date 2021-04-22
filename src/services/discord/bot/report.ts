@@ -9,17 +9,11 @@ import rlStats from '../../rl-stats'
 
 const report = async (command, args, msg) => {
   const leagueId = msg.league._id
-  const gameIds = args.map(
-    url =>
-      url
-        .split('?')[0]
-        .split('/')
-        .slice(-1)[0],
-  )
+  const urls = args.map(url => url.split('?')[0])
 
   try {
     // report scores
-    await rlStats.report({ gameIds, leagueId, replyToChannel: msg.channel.id })
+    await rlStats.report({ urls, leagueId, replyToChannel: msg.channel.id })
     msg.channel.send(`Thank you for the report, <@${msg.author.id}>!`)
   } catch (err) {
     console.error(err)
