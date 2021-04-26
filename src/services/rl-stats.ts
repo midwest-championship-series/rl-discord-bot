@@ -90,10 +90,17 @@ const forfeit = (params: { replyToChannel: string; forfeitTeam: any; matchId: st
 }
 
 const reprocess = (collection: string, params: any) => {
+  const body = {
+    type: 'MATCH_REPROCESS',
+    detail: {
+      collection,
+      params,
+    },
+  }
   return request({
     method: 'POST',
-    url: [baseUrl, 'platform', collection, '_reprocess'].join('/'),
-    qs: params,
+    url: [baseUrl, 'v2', 'events'].join('/'),
+    body,
     headers: { 'x-api-key': process.env.RL_STATS_KEY },
   })
 }
