@@ -6,12 +6,9 @@ const update: UpdateMap = {
   hex_color: overwrite,
   vars: data => {
     const [property, value] = data.value.split(',')
-    const vars = data.doc.vars
-    const varToUpdate = vars.find(v => v.key === property)
-    if(value === 'undefined') {
-      delete varToUpdate[property]
-    } else {
-      varToUpdate[property] = value
+    const vars = data.doc.vars.filter(x => x.key !== property)
+    if(value !== 'undefined') {
+      vars.push({key: property, value: value})
     }
     return { vars }
   },
