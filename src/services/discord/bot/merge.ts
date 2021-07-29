@@ -33,6 +33,7 @@ const mergePlayer = async (command, args, msg) => {
   console.log(newAccounts)
   await rlStats.put(`players/${primary._id}`, { accounts: primary.accounts.concat(newAccounts) })
   await rlStats.del(`players/${secondary._id}`)
+  msg.channel.send(`merged player and deleted id: ${secondary._id}`)
 }
 
 export default mergePlayer
