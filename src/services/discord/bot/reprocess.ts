@@ -10,8 +10,8 @@ const reprocess = async (command, args, msg) => {
       [key]: value,
     }
   }, {})
-  const { succeeded } = await rlStats.reprocess(collection, params)
-  const message = `queued ${succeeded} matches for reprocessing`
+  const { succeeded } = await rlStats.reprocess(collection, params, msg.channel.id)
+  const message = succeeded > 0 ? `submitted reprocess query` : `reprocess query failed`
   console.info(message)
   msg.channel.send(message)
 }

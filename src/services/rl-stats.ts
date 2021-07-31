@@ -89,12 +89,13 @@ const forfeit = (params: { replyToChannel: string; forfeitTeam: any; matchId: st
   })
 }
 
-const reprocess = (collection: string, params: any) => {
+const reprocess = (collection: string, params: any, channelId: string) => {
   const body = {
     type: 'MATCH_REPROCESS',
     detail: {
       collection,
       params,
+      reply_to_channel: channelId,
     },
   }
   return request({
