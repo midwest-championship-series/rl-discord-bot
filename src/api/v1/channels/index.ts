@@ -6,6 +6,7 @@ const router = Router()
 
 router.post('/:channelId', async (req, res, next) => {
   const { channelId } = req.params
+  console.log('sending message to channel', channelId)
   const channel: any = await bot.channels.fetch(channelId)
   let { message, embed } = req.body
   if (message) {
