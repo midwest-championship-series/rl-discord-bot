@@ -20,12 +20,13 @@ export default async (command, args, msg) => {
   }, 1)
   const weekMatches = sortedMatches.filter(match => match.week === nextWeek)
   let response = ''
+  response += `__**${league.name.toUpperCase()} Week ${nextWeek} Matches**__\n`
   response += weekMatches.reduce((result, match) => {
     if (match.scheduled_datetime) {
       const datetime = day(match.scheduled_datetime).tz(leagueTz)
-      result += `${datetime.format('ddd MMM D')} at ${datetime.format('hh:mm')} `
+      result += `${datetime.format('ddd MMM D')} at ${datetime.format('hh:mm')} - `
     }
-    result += match.teams.map(t => `**${t.name}**`).join(' *vs* ')
+    result += match.teams.map(t => `*${t.name}*`).join(' *vs* ')
     result += '\n'
     return result
   }, '')
