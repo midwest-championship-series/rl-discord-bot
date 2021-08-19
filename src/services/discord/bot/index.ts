@@ -37,10 +37,10 @@ client.once('ready', async () => {
 })
 
 const commands = [
+  { command: 'schedule', handler: schedule, anyChannel: true },
   { command: 'link', handler: requestLinkAccount },
   { command: 'report', handler: report },
   { command: 'audit', handler: audit },
-  { command: 'schedule', handler: schedule },
   { command: 'reprocess', handler: reprocess, permissions: ['all-owner', 'all-manager'] },
   { command: 'linkteam', handler: linkTeam, permissions: ['all-owner', 'all-manager'] },
   { command: 'unlinkteam', handler: linkTeam, permissions: ['all-owner', 'all-manager'] },
@@ -67,15 +67,18 @@ const configureActions = commandChannels => {
       // handle channel messages
       const params = msg.content.split(' ')
       const command = params.shift().split('!')[1]
-      const channel = commandChannels.find(c => c.channelId === msg.channel.id)
       const controller = commands.find(cmd => cmd.command === command)
-      if (channel && controller) {
+      const channel = commandChannels.find(c => c.channelId === msg.channel.id)
+      if (
+        (controller && channel) ||
+        (controller && controller.anyChannel === true && process.env.MNRL_ENV === 'prod')
+      ) {
         console.log('processing command', command)
         if (controller.permissions) {
           console.log('validating permissions')
           await checkPermissions(msg.author.id, controller)
         }
-        msg.league = channel.league
+        msg.league = channel && channel.league
         await controller.handler(command, params, msg)
       }
     } catch (err) {
