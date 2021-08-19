@@ -12,15 +12,20 @@ export default async (command, args, msg) => {
   if (!league) throw new Error(`no league found with name ${leagueName}`)
   const leagueTz = league.default_timezone || 'America/New_York'
   const sortedMatches = league.current_season.matches.sort((a, b) => a.week < b.week)
-  const nextWeek = sortedMatches.reduce((result, match) => {
-    if (match.status !== 'open') {
-      result = match.week + 1
-    }
-    return result
-  }, 1)
-  const weekMatches = sortedMatches.filter(match => match.week === nextWeek)
+  let matchWeek
+  if (args.some(arg => arg.split(':')[0] === 'week')) {
+    matchWeek = parseInt(args.find(arg => arg.split(':')[0] === 'week').split(':')[1])
+  } else {
+    matchWeek = sortedMatches.reduce((result, match) => {
+      if (match.status !== 'open') {
+        result = match.week + 1
+      }
+      return result
+    }, 1)
+  }
+  const weekMatches = sortedMatches.filter(match => match.week === matchWeek)
   let response = ''
-  response += `__**${league.name.toUpperCase()} Week ${nextWeek} Matches**__\n`
+  response += `__**${league.name.toUpperCase()} Week ${matchWeek} Matches**__\n`
   response += weekMatches.reduce((result, match) => {
     if (match.scheduled_datetime) {
       const datetime = day(match.scheduled_datetime).tz(leagueTz)
