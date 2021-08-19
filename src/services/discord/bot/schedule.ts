@@ -10,10 +10,10 @@ export default async (command, args, msg) => {
   if (!leagueName) throw new Error('Please request the schedule for a league using !schedule [league name]')
   const [league] = await rlStats.get('leagues', { populate: 'current_season.matches.teams', name: leagueName })
   if (!league) throw new Error(`no league found with name ${leagueName}`)
+  const leagueTz = league.default_timezone || 'America/New_York'
   const sortedMatches = league.current_season.matches.sort((a, b) => a.week < b.week)
   const nextWeek = sortedMatches.reduce((result, match) => {
     if (match.status !== 'open') {
-      console.log(match)
       result = match.week + 1
     }
     return result
@@ -22,7 +22,7 @@ export default async (command, args, msg) => {
   let response = ''
   response += weekMatches.reduce((result, match) => {
     if (match.scheduled_datetime) {
-      const datetime = day(match.scheduled_datetime).tz(league.default_timezone || 'America/New_York')
+      const datetime = day(match.scheduled_datetime).tz(leagueTz)
       result += `${datetime.format('ddd MMM D')} at ${datetime.format('hh:mm')} `
     }
     result += match.teams.map(t => `**${t.name}**`).join(' *vs* ')
