@@ -15,6 +15,7 @@ import createDoc from './create-doc'
 import getDoc from './get-doc'
 import forfeit from './forfeit'
 import mergePlayers from './merge'
+import schedule from './schedule'
 
 const client = new Discord.Client()
 
@@ -39,6 +40,7 @@ const commands = [
   { command: 'link', handler: requestLinkAccount },
   { command: 'report', handler: report },
   { command: 'audit', handler: audit },
+  { command: 'schedule', handler: schedule },
   { command: 'reprocess', handler: reprocess, permissions: ['all-owner', 'all-manager'] },
   { command: 'linkteam', handler: linkTeam, permissions: ['all-owner', 'all-manager'] },
   { command: 'unlinkteam', handler: linkTeam, permissions: ['all-owner', 'all-manager'] },
