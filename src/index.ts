@@ -33,10 +33,3 @@ try {
 } catch (err) {
   throw err
 }
-
-// start twitch bot
-try {
-  require('./services/twitch/bot')
-} catch (err) {
-  throw err
-}
