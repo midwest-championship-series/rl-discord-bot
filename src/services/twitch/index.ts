@@ -1,6 +1,8 @@
 import * as tmi from 'tmi.js'
 import rlStats from '../rl-stats'
-// axios.<method> will now provide autocomplete and parameter typings
+import stats from './stats'
+import goat from './goat'
+
 // Define configuration options
 const opts = {
   identity: {
@@ -30,7 +32,11 @@ async function onConnectedHandler(addr, port) {
     clmn: Response[0].current_season_id,
     mnrs: Response[2].current_season_id,
   }
-
+  // Initialize commands
+  const commands = [
+    { command: 'goat', handler: goat },
+    { command: 'stats', handler: stats },
+  ]
   // Called every time a message comes in
   async function onMessageHandler(target, context, msg, self) {
     if (self) {
@@ -41,7 +47,11 @@ async function onConnectedHandler(addr, port) {
     const commandName = msg.split(' ')[0]
 
     // If the command is known, let's execute it
-
+    try {
+      const executer = commands.find(cmd => cmd.command === commandName)
+    } catch (error) {
+      console.log(`Unkown command ${commandName}`)
+    }
     if (commandName === '!goat') {
       client.say(target, `Grape is the GOAT`)
       console.log(`* Executed ${commandName} command`)
