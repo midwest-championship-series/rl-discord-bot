@@ -1,5 +1,4 @@
 import request from '../utils/request'
-import axios from 'axios'
 
 const baseUrl = process.env.RL_STATS_URL
 
@@ -107,7 +106,11 @@ const reprocess = (collection: string, params: any, channelId: string) => {
   })
 }
 
-async function getPlayerStats(playerID: string, seasonID: string) {
+const getSeasonStandings = async (seasonId: string) => {
+  return get('stats/modules/standings', { season_id: seasonId })
+}
+
+const getPlayerStats = async (playerID: string, seasonID: string) => {
   if (seasonID === 'all') {
     const Response = await get('leagues')
     const seasonIDs = {
@@ -219,4 +222,5 @@ export default {
   reprocess,
   forfeit,
   getPlayerStats,
+  getSeasonStandings,
 }

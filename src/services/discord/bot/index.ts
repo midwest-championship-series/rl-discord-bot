@@ -16,6 +16,7 @@ import getDoc from './get-doc'
 import forfeit from './forfeit'
 import mergePlayers from './merge'
 import schedule from './schedule'
+import standings from './standings'
 
 const client = new Discord.Client()
 
@@ -38,6 +39,7 @@ client.once('ready', async () => {
 
 const commands = [
   { command: 'schedule', handler: schedule, anyChannel: true },
+  { command: 'standings', handler: standings, anyChannel: true },
   { command: 'link', handler: requestLinkAccount },
   { command: 'report', handler: report },
   { command: 'audit', handler: audit },
