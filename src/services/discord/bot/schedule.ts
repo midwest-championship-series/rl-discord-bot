@@ -14,7 +14,7 @@ export default async (command, args, msg) => {
   const sortedMatches = league.current_season.matches.sort((a, b) => a.week < b.week)
   let matchWeek
   if (args.some(arg => arg.split(':')[0] === 'week')) {
-    matchWeek = parseInt(args.find(arg => arg.split(':')[0] === 'week').split(':')[1])
+    matchWeek = Math.abs(parseInt(args.find(arg => arg.split(':')[0] === 'week').split(':')[1]))
   } else {
     matchWeek = sortedMatches.reduce((result, match) => {
       if (match.status !== 'open') {
@@ -22,6 +22,10 @@ export default async (command, args, msg) => {
       }
       return result
     }, 1)
+  }
+  if (matchWeek == 69) {
+    msg.channel.send('nice.')
+    return
   }
   const weekMatches = sortedMatches.filter(match => match.week === matchWeek)
   let response = ''
