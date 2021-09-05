@@ -2,34 +2,26 @@ import rlStats from '../rl-stats'
 
 const stats = async function(client, target, args, seasonIDs) {
   // parse message into parameters
-  let league = [...args.matchAll(/(?:[Ll]e?a?g?u?e?:\s?)(clmn|mn[cr]s)/g)]
-  const player = [...args.matchAll(/(?:[Nn]a?m?e?:\s?)(.+?)(?=\s?s:|\s?l:|\s?$)/g)]
-  const season = [...args.matchAll(/(?:[Ss]e?a?s?o?n?:\s?)(\d{1})/g)]
-  // get playerName
-  let playerName = ''
-  if (!player.toString()) {
-    client.say(target, `No player name found, please specify player...`)
-  } else {
-    playerName = player[0][1]
-  }
-  // get leagueName
   let leagueName = ''
-  if (!league.toString()) {
+  let playerName = ''
+  if (args[1] != 'mncs' && args[1] != 'clmn' && args[1] != 'mnrs' && args[1] != 'all') {
     leagueName = 'all'
+    playerName = args
+      .split(' ')
+      .slice(1)
+      .join(' ')
   } else {
-    leagueName = league[0][1]
+    leagueName = args.split(' ')[1]
+    playerName = args
+      .split(' ')
+      .slice(2)
+      .join(' ')
   }
-  // get season
-  let seasonID = ''
-  if (!season.toString() && leagueName != 'all') {
-    seasonID = seasonIDs[leagueName]
-  }
-  // retrieve player id
   let playerID = ''
   try {
     playerID = (await rlStats.get('players', { screen_name: playerName }))[0]._id
   } catch (error) {
-    client.say(target, `Player ${playerName} not found...`)
+    client.say(target, `Player name not found for name ${playerName}`)
   }
   if (leagueName === 'all') {
     try {
