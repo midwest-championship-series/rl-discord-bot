@@ -2,8 +2,8 @@ import rlStats from '../rl-stats'
 
 const stats = async function(client, target, args, seasonIDs) {
   // parse message into parameters
-  let league = [...args.matchAll(/(?:[Ll]e?a?g?u?e?:\s?)(clmn|mn[cr]s)/g)]
-  const player = [...args.matchAll(/(?:[Nn]a?m?e?:\s?)(.+?)(?=\s?s:|\s?l:|\s?$)/g)]
+  let league = [...args.matchAll(/(?:[Ll]e?a?g?u?e?:\s?)([Cc][Ll][Mm][Nn]|[Mm][Nn][CcRr][Ss])/g)]
+  const player = [...args.matchAll(/(?:[Nn]a?m?e?:\s?)(.+?)(?=\s?[Ss]:|\s?[Ll]:|\s?$)/g)]
   const season = [...args.matchAll(/(?:[Ss]e?a?s?o?n?:\s?)(\d{1})/g)]
   // get playerName
   let playerName = ''
@@ -60,7 +60,7 @@ const stats = async function(client, target, args, seasonIDs) {
     }
   } else {
     try {
-      const playerStats = await rlStats.getPlayerStats(playerID, seasonIDs[leagueName])
+      const playerStats = await rlStats.getPlayerStats(playerID, seasonIDs[leagueName.toLowerCase()])
       const saves = playerStats.total_saves.sum
       const goals = playerStats.total_goals.sum
       const assists = playerStats.total_assists.sum
