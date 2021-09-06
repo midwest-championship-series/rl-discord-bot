@@ -17,8 +17,11 @@ import forfeit from './forfeit'
 import mergePlayers from './merge'
 import schedule from './schedule'
 import standings from './standings'
+import initVoiceHandler from './voice-channels'
 
 const client = new Discord.Client()
+
+initVoiceHandler(client)
 
 client.once('ready', async () => {
   console.log(`Logged in as ${client.user.tag}!`)
