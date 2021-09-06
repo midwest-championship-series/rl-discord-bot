@@ -45,6 +45,7 @@ const handleDisconnect = async (state: VoiceState) => {
 
 export default (client: Client) => {
   try {
+    if (process.env.MNRL_ENV !== 'prod') return
     client.on('voiceStateUpdate', async (oldState, newState) => {
       if (newState && newState.channel) {
         await handleConnect(newState)
