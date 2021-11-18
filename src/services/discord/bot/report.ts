@@ -13,7 +13,8 @@ const report = async (command, args, msg) => {
 
   try {
     // report scores
-    await rlStats.report({ urls, leagueId, replyToChannel: msg.channel.id })
+    const res = await rlStats.report({ urls, leagueId, replyToChannel: msg.channel.id })
+    console.log(res)
     msg.channel.send(`Thank you for the report, <@${msg.author.id}>!`)
   } catch (err) {
     console.error(err)
