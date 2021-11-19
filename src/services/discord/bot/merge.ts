@@ -18,6 +18,11 @@ const mergePlayer = async (command, args, msg) => {
   }
   const secondary = queryUsers[0]
   const [primary] = await rlStats.get('players', { discord_id: mentionedUserId })
+
+  if (secondary._id === primary._id) {
+    throw new Error('both user ids are the same')
+  }
+
   // for (let account of secondary.accounts) {
   const newAccounts = secondary.accounts.reduce((result, account) => {
     const match = primary.accounts.find(
