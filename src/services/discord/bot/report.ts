@@ -14,20 +14,8 @@ const report = async (command, args, msg) => {
     .filter(url => url.match(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/))
   const manualReports = []
   const allRoles: any[] = Array.from(msg.mentions.roles.values())
-  if (allRoles.length !== 2) {
-    let message = `expected 2 teams mentioned but got ${allRoles.length}\n`
-    message += `expected usage:\n\`\`\`!report <@team 1> <@team 2>\n`
-    message += `g::1::w::<@team that won game 1>\n`
-    message += `g::2::ff::<@team that ff'd game 2>\n`
-    message += `etc...\`\`\``
-    throw new Error(message)
-  }
 
   const teams = await rlStats.get('teams', allRoles.map(r => `discord_id=${r.id}`).join('&'))
-  if (teams.length !== 2) {
-    let message = `expected 2 teams but got ${teams.length}. teams: ${teams.map(t => t.name).join(', ')}`
-    throw new Error(message)
-  }
 
   // const gameReportRegex = new RegExp(/g::/s)
   manualReports.push(
@@ -48,6 +36,21 @@ const report = async (command, args, msg) => {
         return result
       }, []),
   )
+
+  if (manualReports.length > 0) {
+    if (allRoles.length !== 2) {
+      let message = `expected 2 teams mentioned but got ${allRoles.length}\n`
+      message += `expected usage:\n\`\`\`!report <@team 1> <@team 2>\n`
+      message += `g::1::w::<@team that won game 1>\n`
+      message += `g::2::ff::<@team that ff'd game 2>\n`
+      message += `etc...\`\`\``
+      throw new Error(message)
+    }
+    if (teams.length !== 2) {
+      let message = `expected 2 teams but got ${teams.length}. teams: ${teams.map(t => t.name).join(', ')}`
+      throw new Error(message)
+    }
+  }
 
   try {
     // report scores
