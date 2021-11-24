@@ -70,7 +70,7 @@ const configureActions = commandChannels => {
       }
 
       // handle channel messages
-      const params = msg.content.split(' ')
+      const params = msg.content.split(' ').map(p => p.trim())
       const command = params.shift().split('!')[1]
       const controller = commands.find(cmd => cmd.command === command)
       const channel = commandChannels.find(c => c.channelId === msg.channel.id)

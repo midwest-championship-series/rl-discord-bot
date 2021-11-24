@@ -50,14 +50,34 @@ const del = (resource: string) => {
   })
 }
 
-const report = ({ urls, leagueId, replyToChannel }: { urls: string[]; leagueId: string; replyToChannel: string }) => {
-  const body = {
+const report = ({
+  urls,
+  leagueId,
+  replyToChannel,
+  manualReports,
+  mentionedTeamIds,
+}: {
+  urls: string[]
+  leagueId: string
+  replyToChannel: string
+  manualReports?: {
+    game_number: number
+    winning_team_id: string
+    forfeit: boolean
+  }[]
+  mentionedTeamIds?: string[]
+}) => {
+  const body: any = {
     type: 'MATCH_PROCESS_GAMES_REPORTED',
     detail: {
       urls,
       league_id: leagueId,
       reply_to_channel: replyToChannel,
     },
+  }
+  if (manualReports.length > 0) {
+    body.detail.manual_reports = manualReports
+    body.detail.mentioned_team_ids = mentionedTeamIds
   }
   console.log(`reporting games: ${urls.join(', ')}`)
   return request({

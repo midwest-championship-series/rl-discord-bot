@@ -9,12 +9,58 @@ import rlStats from '../../rl-stats'
 
 const report = async (command, args, msg) => {
   const leagueId = msg.league._id
-  const urls = args.map(url => url.split('?')[0])
+  const urls = args
+    .map(url => url.split('?')[0])
+    .filter(url => url.match(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/))
+  const manualReports = []
+  const allRoles: any[] = Array.from(msg.mentions.roles.values())
+
+  const teams = await rlStats.get('teams', allRoles.map(r => `discord_id=${r.id}`).join('&'))
+
+  // const gameReportRegex = new RegExp(/g::/s)
+  manualReports.push(
+    ...args
+      .filter(a => a.match(/g::/))
+      .reduce((result, item) => {
+        const [g, gameNumber, winType, teamMention] = item.split('::')
+        if (!['w', 'ff'].includes(winType)) {
+          throw new Error(`expected win type "w" or "ff" but got ${winType}`)
+        }
+        const mentionReg = new RegExp(/(?<=<@&)(.*)(?=>)/s)
+        const mentionedTeamId = mentionReg.exec(teamMention)[0]
+        result.push({
+          game_number: parseInt(gameNumber),
+          winning_team_id: teams.find(t => t.discord_id === mentionedTeamId)._id,
+          forfeit: winType === 'ff',
+        })
+        return result
+      }, []),
+  )
+
+  if (manualReports.length > 0) {
+    if (allRoles.length !== 2) {
+      let message = `expected 2 teams mentioned but got ${allRoles.length}\n`
+      message += `expected usage:\n\`\`\`!report <@team 1> <@team 2>\n`
+      message += `g::1::w::<@team that won game 1>\n`
+      message += `g::2::ff::<@team that ff'd game 2>\n`
+      message += `etc...\`\`\``
+      throw new Error(message)
+    }
+    if (teams.length !== 2) {
+      let message = `expected 2 teams but got ${teams.length}. teams: ${teams.map(t => t.name).join(', ')}`
+      throw new Error(message)
+    }
+  }
 
   try {
     // report scores
-    const res = await rlStats.report({ urls, leagueId, replyToChannel: msg.channel.id })
-    console.log(res)
+    await rlStats.report({
+      urls,
+      leagueId,
+      replyToChannel: msg.channel.id,
+      manualReports,
+      mentionedTeamIds: teams.map(t => t._id),
+    })
     msg.channel.send(`Thank you for the report, <@${msg.author.id}>!`)
   } catch (err) {
     console.error(err)
