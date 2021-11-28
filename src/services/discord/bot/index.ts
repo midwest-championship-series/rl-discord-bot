@@ -18,6 +18,7 @@ import mergePlayers from './merge'
 import schedule from './schedule'
 import standings from './standings'
 import initVoiceHandler from './voice-channels'
+import manualReport from './manualreport'
 
 const client = new Discord.Client()
 
@@ -45,6 +46,7 @@ const commands = [
   { command: 'standings', handler: standings, anyChannel: true },
   { command: 'link', handler: requestLinkAccount },
   { command: 'report', handler: report },
+  { command: 'manualreport', handler: manualReport, permissions: ['all-owner', 'all-manager'] },
   { command: 'audit', handler: audit },
   { command: 'reprocess', handler: reprocess, permissions: ['all-owner', 'all-manager'] },
   { command: 'linkteam', handler: linkTeam, permissions: ['all-owner', 'all-manager'] },
