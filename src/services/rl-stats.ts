@@ -75,7 +75,7 @@ const report = ({
       reply_to_channel: replyToChannel,
     },
   }
-  if (manualReports.length > 0) {
+  if (manualReports && manualReports.length > 0) {
     body.detail.manual_reports = manualReports
     body.detail.mentioned_team_ids = mentionedTeamIds
   }
