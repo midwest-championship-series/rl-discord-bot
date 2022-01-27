@@ -28,9 +28,9 @@ async function onConnectedHandler(addr, port) {
   // Initialize Season IDs
   const Response = await rlStats.get('leagues')
   const seasonIDs = {
-    mncs: Response[1].current_season_id,
-    clmn: Response[0].current_season_id,
-    mnrs: Response[2].current_season_id,
+    mncs: Response.find(league => league.name == 'mncs').current_season_id,
+    clmn: Response.find(league => league.name == 'clmn').current_season_id,
+    mnrs: Response.find(league => league.name == 'mnrs').current_season_id,
   }
   // Initialize commands
   const commands = [

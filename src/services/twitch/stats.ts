@@ -25,12 +25,12 @@ const stats = async function(client, target, args, seasonIDs) {
     seasonID = seasonIDs[leagueName]
   }
   // retrieve player id
-  let playerID = ''
-  try {
-    playerID = (await rlStats.get('players', { screen_name: playerName }))[0]._id
-  } catch (error) {
+  const playerSearch = await rlStats.get('players', { screen_name: playerName })
+  if (!playerSearch[0]) {
     client.say(target, `Player ${playerName} not found...`)
+    return
   }
+  const playerID = (await rlStats.get('players', { screen_name: playerName }))[0]._id
   if (leagueName === 'all') {
     try {
       // need to add logic to handle 1,2, or 3 seasons returned
