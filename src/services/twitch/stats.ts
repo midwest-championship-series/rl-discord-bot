@@ -36,14 +36,14 @@ const stats = async function(client, target, args, seasonIDs) {
       // need to add logic to handle 1,2, or 3 seasons returned
       const playerStats = await rlStats.getPlayerStats(playerID, 'all')
       const mncsSaves = playerStats.total_saves.buckets.mncs.saves.value
-      const mncsGoals = playerStats.total_goals.buckets.mncs.saves.value
-      const mncsAssists = playerStats.total_assists.buckets.mncs.saves.value
+      const mncsGoals = playerStats.total_goals.buckets.mncs.goals.value
+      const mncsAssists = playerStats.total_assists.buckets.mncs.assists.value
       const clmnSaves = playerStats.total_saves.buckets.clmn.saves.value
-      const clmnGoals = playerStats.total_goals.buckets.clmn.saves.value
-      const clmnAssists = playerStats.total_assists.buckets.clmn.saves.value
+      const clmnGoals = playerStats.total_goals.buckets.clmn.goals.value
+      const clmnAssists = playerStats.total_assists.buckets.clmn.assists.value
       const mnrsSaves = playerStats.total_saves.buckets.mnrs.saves.value
-      const mnrsGoals = playerStats.total_goals.buckets.mnrs.saves.value
-      const mnrsAssists = playerStats.total_assists.buckets.mnrs.saves.value
+      const mnrsGoals = playerStats.total_goals.buckets.mnrs.goals.value
+      const mnrsAssists = playerStats.total_assists.buckets.mnrs.assists.value
       client.say(
         target,
         `${playerName}:
