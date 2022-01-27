@@ -1,3 +1,4 @@
+import { getKeyValue } from '../../utils/message-parse'
 import rlStats from '../rl-stats'
 
 const stats = async function(client, target, args, seasonIDs) {
@@ -35,15 +36,15 @@ const stats = async function(client, target, args, seasonIDs) {
     try {
       // need to add logic to handle 1,2, or 3 seasons returned
       const playerStats = await rlStats.getPlayerStats(playerID, 'all')
-      const mncsSaves = playerStats.total_saves.buckets.mncs.saves.value
-      const mncsGoals = playerStats.total_goals.buckets.mncs.goals.value
-      const mncsAssists = playerStats.total_assists.buckets.mncs.assists.value
-      const clmnSaves = playerStats.total_saves.buckets.clmn.saves.value
-      const clmnGoals = playerStats.total_goals.buckets.clmn.goals.value
-      const clmnAssists = playerStats.total_assists.buckets.clmn.assists.value
-      const mnrsSaves = playerStats.total_saves.buckets.mnrs.saves.value
-      const mnrsGoals = playerStats.total_goals.buckets.mnrs.goals.value
-      const mnrsAssists = playerStats.total_assists.buckets.mnrs.assists.value
+      const mncsSaves = getValue(playerStats, 'saves', 'mncs')
+      const mncsGoals = getValue(playerStats, 'goals', 'mncs')
+      const mncsAssists = getValue(playerStats, 'assists', 'mncs')
+      const clmnSaves = getValue(playerStats, 'saves', 'clmn')
+      const clmnGoals = getValue(playerStats, 'goals', 'clmn')
+      const clmnAssists = getValue(playerStats, 'assists', 'clmn')
+      const mnrsSaves = getValue(playerStats, 'saves', 'mnrs')
+      const mnrsGoals = getValue(playerStats, 'goals', 'mnrs')
+      const mnrsAssists = getValue(playerStats, 'assists', 'mnrs')
       client.say(
         target,
         `${playerName}:
@@ -73,4 +74,8 @@ const stats = async function(client, target, args, seasonIDs) {
     }
   }
 }
+const getValue = (playerStats: any, stat: string, league: string) => {
+  return playerStats['total_' + stat]['buckets'][league][stat].value
+}
+
 export default stats
