@@ -7,21 +7,21 @@ const stats = async function(client, target, args, seasonIDs) {
   const season = [...args.matchAll(/(?:[Ss]e?a?s?o?n?:\s?)(\d{1})/g)]
   // get playerName
   let playerName = ''
-  if (!player.toString()) {
+  if (!player[0]) {
     client.say(target, `No player name found, please specify player...`)
   } else {
     playerName = player[0][1]
   }
   // get leagueName
   let leagueName = ''
-  if (!league.toString()) {
+  if (!league[0]) {
     leagueName = 'all'
   } else {
     leagueName = league[0][1]
   }
   // get season
   let seasonID = ''
-  if (!season.toString() && leagueName != 'all') {
+  if (!season[0] && leagueName != 'all') {
     seasonID = seasonIDs[leagueName]
   }
   // retrieve player id
