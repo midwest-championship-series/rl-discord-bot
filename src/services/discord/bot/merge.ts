@@ -2,9 +2,10 @@ import { createQuery } from '../../../utils/message-parse'
 import rlStats from '../../rl-stats'
 
 const mergePlayer = async (command, args, msg) => {
-  const allUsers: any[] = Array.from(msg.mentions.users.values())
-  if (allUsers.length > 1) {
-    throw new Error(`expected 1 user mention but got ${allUsers.length}`)
+  const mentionReg = new RegExp(/(?<=<@!)(.*)(?=>)/s)
+  const mentionedUserId = mentionReg.exec(msg)[0]
+  if (!mentionedUserId) {
+    throw new Error(`expected 1 user mention`)
   }
   const queryArgs = args.filter(arg => arg.includes(':'))
   const queryUsers = await rlStats.get('players', createQuery(queryArgs))
@@ -16,7 +17,12 @@ const mergePlayer = async (command, args, msg) => {
     )
   }
   const secondary = queryUsers[0]
-  const [primary] = await rlStats.get('players', { discord_id: allUsers[0].id })
+  const [primary] = await rlStats.get('players', { discord_id: mentionedUserId })
+
+  if (secondary._id === primary._id) {
+    throw new Error('both user ids are the same')
+  }
+
   // for (let account of secondary.accounts) {
   const newAccounts = secondary.accounts.reduce((result, account) => {
     const match = primary.accounts.find(

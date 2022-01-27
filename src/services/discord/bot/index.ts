@@ -16,8 +16,13 @@ import getDoc from './get-doc'
 import forfeit from './forfeit'
 import mergePlayers from './merge'
 import schedule from './schedule'
+import standings from './standings'
+import initVoiceHandler from './voice-channels'
+import manualReport from './manualreport'
 
 const client = new Discord.Client()
+
+initVoiceHandler(client)
 
 client.once('ready', async () => {
   console.log(`Logged in as ${client.user.tag}!`)
@@ -38,8 +43,10 @@ client.once('ready', async () => {
 
 const commands = [
   { command: 'schedule', handler: schedule, anyChannel: true },
+  { command: 'standings', handler: standings, anyChannel: true },
   { command: 'link', handler: requestLinkAccount },
   { command: 'report', handler: report },
+  { command: 'manualreport', handler: manualReport, permissions: ['all-owner', 'all-manager'] },
   { command: 'audit', handler: audit },
   { command: 'reprocess', handler: reprocess, permissions: ['all-owner', 'all-manager'] },
   { command: 'linkteam', handler: linkTeam, permissions: ['all-owner', 'all-manager'] },
@@ -65,7 +72,7 @@ const configureActions = commandChannels => {
       }
 
       // handle channel messages
-      const params = msg.content.split(' ')
+      const params = msg.content.split(' ').map(p => p.trim())
       const command = params.shift().split('!')[1]
       const controller = commands.find(cmd => cmd.command === command)
       const channel = commandChannels.find(c => c.channelId === msg.channel.id)

@@ -2,18 +2,18 @@ import rlStats from '../../rl-stats'
 
 /**
  * @todo error handling if report goes wrong
- * @todo validation on report message
- * @todo figure out how to @ the user correctly
- * @todo link w/o displaying full link
  */
 
 const report = async (command, args, msg) => {
   const leagueId = msg.league._id
-  const urls = args.map(url => url.split('?')[0])
+  const urls = args
+    .filter(url => url.match(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/))
+    .map(url => url.split('?')[0])
 
   try {
     // report scores
-    await rlStats.report({ urls, leagueId, replyToChannel: msg.channel.id })
+    const res = await rlStats.report({ urls, leagueId, replyToChannel: msg.channel.id })
+    console.log(res)
     msg.channel.send(`Thank you for the report, <@${msg.author.id}>!`)
   } catch (err) {
     console.error(err)

@@ -21,9 +21,9 @@ export class BotRequestError extends Error {
   }
 }
 
-const defaultOptions: Partial<EdjiRequestOptions> = { retries: 1, retryOnStatusCodes: [500, 502, 503], json: true }
+const defaultOptions: Partial<UtilRequestOptions> = { retries: 1, retryOnStatusCodes: [500, 502, 503], json: true }
 
-export const request = (inputOptions: EdjiRequestOptions) => {
+export const request = (inputOptions: UtilRequestOptions) => {
   const options = { ...defaultOptions, ...inputOptions }
   let retryCount = 0
   const makeRequest = () => {
@@ -36,8 +36,7 @@ export const request = (inputOptions: EdjiRequestOptions) => {
             new BotRequestError({
               message:
                 (err && err.message) ||
-                `error making ${options.method} request to ${options.url} failed with status code ${res &&
-                  res.statusCode}`,
+                `error making ${options.method} request - failed with status code: ${res && res.statusCode}`,
               url: options.url.toString(),
               method: options.method,
               body,
@@ -62,7 +61,7 @@ export const request = (inputOptions: EdjiRequestOptions) => {
   return makeRequest()
 }
 
-export interface EdjiRequestOptions extends nodeRequest.OptionsWithUrl {
+export interface UtilRequestOptions extends nodeRequest.OptionsWithUrl {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE'
   retries?: number /** number of times to retry the request */
   retryOnStatusCodes?: number[] /** retries when these status codes are received */
