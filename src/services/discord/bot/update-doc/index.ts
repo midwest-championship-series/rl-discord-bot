@@ -21,7 +21,17 @@ const update = async (command, args, msg) => {
   if (allMentions.length > 1) {
     throw new Error('cannot mention more than one role/user in update')
   }
-  const query = { discord_id: allMentions[0].id }
+  const query: any = {}
+  if (allMentions.length > 0) {
+    query.discord_id = allMentions[0].id
+  }
+  const [idProp] = args.splice(
+    args.findIndex(arg => arg.includes('_id:')),
+    1,
+  )
+  if (idProp) {
+    query._id = idProp.split(':')[1]
+  }
   const docs = await rlStats.get(`${model}`, query)
   if (!docs[0]) {
     throw new Error(`no documents found for ${model} by query: ${JSON.stringify(query)}`)
