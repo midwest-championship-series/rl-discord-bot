@@ -19,6 +19,7 @@ import schedule from './schedule'
 import standings from './standings'
 import initVoiceHandler from './voice-channels'
 import manualReport from './manualreport'
+import playerStats from './playerstats'
 
 const client = new Discord.Client()
 
@@ -44,6 +45,7 @@ client.once('ready', async () => {
 const commands = [
   { command: 'schedule', handler: schedule, anyChannel: true },
   { command: 'standings', handler: standings, anyChannel: true },
+  { command: 'playerstats', handler: playerStats, anyChannel: true },
   { command: 'link', handler: requestLinkAccount },
   { command: 'report', handler: report },
   { command: 'manualreport', handler: manualReport, permissions: ['all-owner', 'all-manager'] },

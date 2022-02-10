@@ -35,7 +35,7 @@ const stats = async function(client, target, args, seasonIDs) {
   if (leagueName === 'all') {
     try {
       // need to add logic to handle 1,2, or 3 seasons returned
-      const playerStats = await rlStats.getPlayerStats(playerID, 'all')
+      const playerStats = await rlStats.legacyGetPlayerStats(playerID, 'all')
       const mncsSaves = getValue(playerStats, 'saves', 'mncs')
       const mncsGoals = getValue(playerStats, 'goals', 'mncs')
       const mncsAssists = getValue(playerStats, 'assists', 'mncs')
