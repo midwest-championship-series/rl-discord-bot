@@ -44,8 +44,9 @@ const update = async (command, args, msg, objectArgs: { [key: string]: any }) =>
   const notUpdated = []
   const update = Object.entries(objectArgs).reduce((result, item) => {
     const [property, value] = item
+    if (property === '_id') return result
     const getUpdate = updateRules[property]
-    if (!getUpdate && property !== '_id') {
+    if (!getUpdate) {
       notUpdated.push(property)
       return result
     }
