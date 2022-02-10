@@ -1,6 +1,7 @@
 import rlStats from '../../../rl-stats'
 
-export default async (msg: any, args: string[] = []) => {
+export default async (msg: any, args: string[]) => {
+  if (!args) args = []
   const role = msg.mentions.roles.values().next()
   const franchise = args.reduce(
     (result, item) => {
