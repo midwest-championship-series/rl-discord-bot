@@ -130,7 +130,15 @@ const getSeasonStandings = async (seasonId: string) => {
   return get('stats/modules/standings', { season_id: seasonId })
 }
 
-const getPlayerStats = async (playerID: string, seasonID: string) => {
+const getPlayerStats = async (filters: string[], stats: string[]) => {
+  const response = await post('stats/modules/player-totals', {
+    filters,
+    stats,
+  })
+  return response
+}
+
+const legacyGetPlayerStats = async (playerID: string, seasonID: string) => {
   if (seasonID === 'all') {
     const Response = await get('leagues')
     const seasonIDs = {
@@ -241,6 +249,7 @@ export default {
   report,
   reprocess,
   forfeit,
-  getPlayerStats,
+  legacyGetPlayerStats,
   getSeasonStandings,
+  getPlayerStats,
 }

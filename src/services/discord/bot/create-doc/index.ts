@@ -1,7 +1,9 @@
 import matchCreator from './match'
+import franchiseCreator from './franchise'
 
 const creators = {
   match: matchCreator,
+  franchise: franchiseCreator,
 }
 
 const argRegex = /[^\"\s]*:(("(.*?)")|[^\"\s]*)/g

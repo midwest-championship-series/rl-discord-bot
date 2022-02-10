@@ -34,9 +34,16 @@ const linkTeam = async (command, args, msg) => {
   const linked = []
   const created = []
   // get the value of the first role mentioned
-  const teamId = msg.mentions.roles.values().next().value.id
-  const [team] = await rlStats.get('teams', { discord_id: teamId })
-  if (!team) throw new Error(`no team linked to discord id: ${teamId}`)
+  const roles: any[] = Array.from(msg.mentions.roles.values())
+  if (roles.length !== 2) throw new Error(`expected franchise and league mentions but got ${roles.length} mentions`)
+  const [franchise] = await rlStats.get(
+    'franchises',
+    `discord_id=${roles[0].id}&discord_id=${roles[1].id}&populate=teams`,
+  )
+  if (!franchise) throw new Error(`no franchise linked to discord id`)
+  const tierNames = roles.map(r => r.name.toLowerCase())
+  const team = franchise.teams.find(t => t.tier_name && tierNames.includes(t.tier_name.toLowerCase()))
+  if (!team) throw new Error(`no team found`)
   for (let [id, user] of msg.mentions.users) {
     const registeredPlayers = await rlStats.get('players', { discord_id: user.id })
     if (registeredPlayers.length > 1) throw new Error(`multiple players registered with discord id: ${user.id}`)

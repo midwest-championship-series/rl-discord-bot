@@ -5,6 +5,7 @@ const update: UpdateMap = {
   avatar: overwrite,
   hex_color: overwrite,
   discord_id: overwrite,
+  tier_name: overwrite,
   vars: data => {
     const [property, value] = data.value.split(',')
     const vars = data.doc.vars.filter(x => x.key !== property)
