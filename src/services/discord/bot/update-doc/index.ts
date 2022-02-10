@@ -8,7 +8,7 @@ const updaters: { [key: string]: { [key: string]: Updater } } = {
   teams: teamUpdates,
 }
 
-const update = async (command, args, msg) => {
+const update = async (command, args, msg, objectArgs: { [key: string]: any }) => {
   const model = args.shift()
   console.log('updating', model)
   const updateRules = updaters[model]
@@ -40,14 +40,12 @@ const update = async (command, args, msg) => {
     throw new Error(`expected to find one document but found ${docs.length} for query: ${JSON.stringify(query)}`)
   }
 
-  const updates = allMentions.length > 0 ? args.filter(arg => !arg.includes(allMentions[0].id)) : args
   const doc = docs[0]
   const notUpdated = []
-  const update = updates.reduce((result, item) => {
-    const property = item.split(':')[0]
-    const value = item.substring(property.length + 1)
+  const update = Object.entries(objectArgs).reduce((result, item) => {
+    const [property, value] = item
     const getUpdate = updateRules[property]
-    if (!getUpdate) {
+    if (!getUpdate && property !== '_id') {
       notUpdated.push(property)
       return result
     }

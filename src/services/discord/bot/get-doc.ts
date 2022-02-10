@@ -3,13 +3,15 @@ import rlStats from '../../rl-stats'
 import createEmbed from '../../../utils/create-embed'
 import { pullArg, createQuery } from '../../../utils/message-parse'
 
-const getDoc = async (command, args, msg) => {
+const getDoc = async (command, args, msg, objectArgs) => {
   const pageSize = 5
   const model = args.shift()
-  const page = parseInt(pullArg(args, 'page').value || '1')
-  const selectStatement = pullArg(args, 'select').value
+  const page = parseInt(objectArgs.page || '1')
+  const selectStatement = objectArgs.select
   const selection = selectStatement && selectStatement.split(',')
-  const query = createQuery(args)
+  delete objectArgs.page
+  delete objectArgs.select
+  const query = objectArgs
   const results = (await rlStats.get(model, query)).map(doc => (selection ? pick(doc, selection) : doc))
   const pagedResults = chunk(results, pageSize)
   if (pagedResults.length < 1) {

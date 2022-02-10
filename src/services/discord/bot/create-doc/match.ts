@@ -1,20 +1,10 @@
 import rlStats from '../../../rl-stats'
 
-export default async (msg: any, args: string[]) => {
+export default async (msg: any, objectArgs: any) => {
   const teamDiscordIds = Array.from(msg.mentions.roles.values()).map((t: any) => t.id)
   if (teamDiscordIds.length !== 2) {
     throw new Error(`Expected to get two teams but got ${teamDiscordIds.length}`)
   }
-
-  const objectArgs: any = args.reduce((result, item) => {
-    const propName = item.split(':')[0]
-    let propValue = item.substr(propName.length + 1)
-    if (propValue.charAt(0) === '"' && propValue.charAt(propValue.length - 1) === '"') {
-      propValue = propValue.substr(1, propValue.length - 2)
-    }
-    result[propName] = propValue
-    return result
-  }, {})
 
   if (!objectArgs.season_id) {
     throw new Error('match args must contain a season_id')

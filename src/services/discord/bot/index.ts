@@ -74,6 +74,19 @@ const configureActions = commandChannels => {
       }
 
       // handle channel messages
+      const argRegex = /[^\"\s]*:(("(.*?)")|[^\"\s]*)/g
+      const args = msg.content.match(argRegex)
+      const objectArgs: any = args
+        ? args.reduce((result, item) => {
+            const propName = item.split(':')[0]
+            let propValue = item.substr(propName.length + 1)
+            if (propValue.charAt(0) === '"' && propValue.charAt(propValue.length - 1) === '"') {
+              propValue = propValue.substr(1, propValue.length - 2)
+            }
+            result[propName] = propValue
+            return result
+          }, {})
+        : []
       const params = msg.content.split(' ').map(p => p.trim())
       const command = params.shift().split('!')[1]
       const controller = commands.find(cmd => cmd.command === command)
@@ -88,7 +101,7 @@ const configureActions = commandChannels => {
           await checkPermissions(msg.author.id, controller)
         }
         msg.league = channel && channel.league
-        await controller.handler(command, params, msg)
+        await controller.handler(command, params, msg, objectArgs)
       }
     } catch (err) {
       console.error(err)
