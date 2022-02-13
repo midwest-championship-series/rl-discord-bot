@@ -5,16 +5,16 @@ import * as timezone from 'dayjs/plugin/timezone'
 day.extend(utc)
 day.extend(timezone)
 
-export default async (command, args, msg) => {
-  const leagueName = args[0] && args[0].toLowerCase()
+export default async (command, args, msg, objectArgs) => {
+  const leagueName = args[0]
   if (!leagueName) throw new Error('Please request the schedule for a league using !schedule [league name]')
   const [league] = await rlStats.get('leagues', { populate: 'current_season.matches.teams', name: leagueName })
   if (!league) throw new Error(`no league found with name ${leagueName}`)
   const leagueTz = league.default_timezone || 'America/New_York'
   const sortedMatches = league.current_season.matches.sort((a, b) => a.week < b.week)
   let matchWeek
-  if (args.some(arg => arg.split(':')[0] === 'week')) {
-    matchWeek = Math.abs(parseInt(args.find(arg => arg.split(':')[0] === 'week').split(':')[1]))
+  if (objectArgs.week) {
+    matchWeek = Math.abs(parseInt(objectArgs.week))
   } else {
     matchWeek = sortedMatches.reduce((result, match) => {
       if (match.status !== 'open') {
