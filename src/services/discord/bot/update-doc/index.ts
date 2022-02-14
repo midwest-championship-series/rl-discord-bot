@@ -25,11 +25,9 @@ const update = async (command, args, msg, objectArgs: { [key: string]: any }) =>
   if (allMentions.length > 0) {
     query.discord_id = allMentions[0].id
   }
-  const [idProp] = args.splice(
-    args.findIndex(arg => arg.includes('_id:')),
-    1,
-  )
-  if (idProp) {
+  const idPropIndex = args.findIndex(arg => arg.includes('_id:'))
+  if (idPropIndex > -1) {
+    const [idProp] = args.splice(idPropIndex, 1)
     query._id = idProp.split(':')[1]
   }
   const docs = await rlStats.get(`${model}`, query)
