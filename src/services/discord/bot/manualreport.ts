@@ -13,24 +13,40 @@ const report = async (command, args, msg) => {
     .filter(url => url.match(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/))
     .map(url => url.split('?')[0])
   const manualReports = []
-  const allRoles: any[] = Array.from(msg.mentions.roles.values())
+  // get the value of the first role mentioned
+  const roles: any[] = Array.from(msg.mentions.roles.values())
+  if (roles.length !== 2) throw new Error(`expected 2 franchise mentions but got ${roles.length} mentions`)
+  const franchises = await rlStats.get(
+    'franchises',
+    `discord_id=${roles[0].id}&discord_id=${roles[1].id}&populate=teams`,
+  )
+  if (franchises.length !== 2) throw new Error(`expected 2 franchises but got ${franchises.length}`)
+  const tierName = msg.league.name.toLowerCase()
+  const teams = franchises.map(franchise => {
+    return franchise.teams.find(t => {
+      if (t.tier_name && t.tier_name.toLowerCase() === tierName) {
+        t.franchise = franchise
+        return t
+      }
+    })
+  })
 
-  const teams = await rlStats.get('teams', allRoles.map(r => `discord_id=${r.id}`).join('&'))
-
-  // const gameReportRegex = new RegExp(/g::/s)
+  // const gameReportRegex = new RegExp(/g///s)
   manualReports.push(
     ...args
-      .filter(a => a.match(/g::/))
+      .filter(a => a.match(/g\/\//))
       .reduce((result, item) => {
-        const [g, gameNumber, winType, teamMention] = item.split('::')
+        console.log('item', item)
+        const [g, gameNumber, winType, franchiseMention] = item.split('//')
+        console.log(g, gameNumber, winType, franchiseMention)
         if (!['w', 'ff'].includes(winType)) {
           throw new Error(`expected win type "w" or "ff" but got ${winType}`)
         }
         const mentionReg = new RegExp(/(?<=<@&)(.*)(?=>)/s)
-        const mentionedTeamId = mentionReg.exec(teamMention)[0]
+        const mentionFranchiseId = mentionReg.exec(franchiseMention)[0]
         result.push({
           game_number: parseInt(gameNumber),
-          winning_team_id: teams.find(t => t.discord_id === mentionedTeamId)._id,
+          winning_team_id: teams.find(t => t.franchise.discord_id === mentionFranchiseId)._id,
           forfeit: winType === 'ff',
         })
         return result
@@ -38,11 +54,11 @@ const report = async (command, args, msg) => {
   )
 
   if (manualReports.length > 0) {
-    if (allRoles.length !== 2) {
-      let message = `expected 2 teams mentioned but got ${allRoles.length}\n`
+    if (roles.length !== 2) {
+      let message = `expected 2 teams mentioned but got ${roles.length}\n`
       message += `expected usage:\n\`\`\`!report <@team 1> <@team 2>\n`
-      message += `g::1::w::<@team that won game 1>\n`
-      message += `g::2::ff::<@team that ff'd game 2>\n`
+      message += `g//1//w//<@team that won game 1>\n`
+      message += `g//2//ff//<@team that ff'd game 2>\n`
       message += `etc...\`\`\``
       throw new Error(message)
     }

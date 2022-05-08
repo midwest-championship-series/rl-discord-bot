@@ -30,7 +30,7 @@ client.once('ready', async () => {
   const leagues = await rlStats.get('leagues')
   const operationChannels = leagues.reduce(
     (result, league) => {
-      if (league.name === 'mncs') {
+      if (league.name.toLowerCase() === 'premier') {
         result.dev.push({ channelId: '692994579305332806', league })
       }
       result.prod = result.prod.concat(league.command_channel_ids.map(id => ({ channelId: id, league })))
