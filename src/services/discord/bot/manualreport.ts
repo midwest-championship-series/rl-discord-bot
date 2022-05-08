@@ -58,7 +58,7 @@ const report = async (command, args, msg) => {
       let message = `expected 2 teams mentioned but got ${roles.length}\n`
       message += `expected usage:\n\`\`\`!report <@team 1> <@team 2>\n`
       message += `g//1//w//<@team that won game 1>\n`
-      message += `g//2//ff//<@team that ff'd game 2>\n`
+      message += `g//2//ff//<@team that won the ff'd game 2>\n`
       message += `etc...\`\`\``
       throw new Error(message)
     }
