@@ -5,6 +5,7 @@
   "scripts": {
     "build": "webpack",
     "start": "nodemon -L --exec node --inspect=9230 -r ts-node/register src",
+    "deploy": "git push heroku master",
     "serve:dev": "yarn build:dev && node -r dotenv/config ./build/",
     "serve:prod": "pm2-runtime start ecosystem.config.js",
     "build:dev": "rm -rf build && tsc && cp .env build",
