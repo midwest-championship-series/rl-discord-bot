@@ -80,9 +80,8 @@ const report = ({
     body.detail.mentioned_team_ids = mentionedTeamIds
   }
   console.log(
-    `reporting games: ${urls.join(', ')} ${manualReports.map(
-      r => `${r.winning_team_id} ${r.forfeit ? 'won due to ff' : 'won'}`,
-    )}`,
+    `reporting games: ${urls.join(', ')} ${manualReports &&
+      manualReports.map(r => `${r.winning_team_id} ${r.forfeit ? 'won due to ff' : 'won'}`)}`,
   )
   return request({
     method: 'POST',
