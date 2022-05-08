@@ -34,7 +34,7 @@ const report = async (command, args, msg) => {
   // const gameReportRegex = new RegExp(/g///s)
   manualReports.push(
     ...args
-      .filter(a => a.match(/g\/\//))
+      .filter(a => a.match(/g\/\//s))
       .reduce((result, item) => {
         console.log('item', item)
         const [g, gameNumber, winType, franchiseMention] = item.split('//')
