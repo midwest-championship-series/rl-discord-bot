@@ -2,8 +2,8 @@ import { createQuery } from '../../../utils/message-parse'
 import rlStats from '../../rl-stats'
 
 const mergePlayer = async (command, args, msg) => {
-  const mentionReg = new RegExp(/(?<=<@!)(.*)(?=>)/s)
-  const mentionedUserId = mentionReg.exec(msg)[0]
+  const mentionReg = new RegExp(/(?<=<@)(.*)(?=>)/s)
+  const mentionedUserId = mentionReg.exec(msg.content)[0]
   if (!mentionedUserId) {
     throw new Error(`expected 1 user mention`)
   }
