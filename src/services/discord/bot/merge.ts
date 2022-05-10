@@ -17,7 +17,14 @@ const mergePlayer = async (command, args, msg) => {
     )
   }
   const secondary = queryUsers[0]
+  if (!secondary) {
+    throw new Error(`no user found with _id:${args._id}`)
+  }
   const [primary] = await rlStats.get('players', { discord_id: mentionedUserId })
+
+  if (!primary) {
+    throw new Error(`no user found with discord id:${mentionedUserId}`)
+  }
 
   if (secondary._id === primary._id) {
     throw new Error('both user ids are the same')
