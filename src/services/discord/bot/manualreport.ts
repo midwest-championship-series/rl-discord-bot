@@ -21,7 +21,7 @@ const report = async (command, args, msg) => {
     `discord_id=${roles[0].id}&discord_id=${roles[1].id}&populate=teams`,
   )
   if (franchises.length !== 2) throw new Error(`expected 2 franchises but got ${franchises.length}`)
-  const tierName = msg.league.name.toLowerCase()
+  const tierName = msg.league.name.replace(' ', '').toLowerCase()
   const teams = franchises.map(franchise => {
     return franchise.teams.find(t => {
       if (t.tier_name && t.tier_name.toLowerCase() === tierName) {
@@ -44,6 +44,7 @@ const report = async (command, args, msg) => {
         }
         const mentionReg = new RegExp(/(?<=<@&)(.*)(?=>)/s)
         const mentionFranchiseId = mentionReg.exec(franchiseMention)[0]
+        console.log(teams)
         result.push({
           game_number: parseInt(gameNumber),
           winning_team_id: teams.find(t => t.franchise.discord_id === mentionFranchiseId)._id,
