@@ -11,7 +11,13 @@ export default async (command, args, msg, objectArgs) => {
   const [league] = await rlStats.get('leagues', { populate: 'current_season.matches.teams', name: leagueName })
   if (!league) throw new Error(`no league found with name ${leagueName}`)
   const leagueTz = league.default_timezone || 'America/New_York'
-  const sortedMatches = league.current_season.matches.sort((a, b) => a.week < b.week)
+  const sortedMatches = league.current_season.matches.sort(
+    (a, b) =>
+      a.week - b.week ||
+      (a.scheduled_datetime &&
+        b.scheduled_datetime &&
+        new Date(a.scheduled_datetime).getTime() - new Date(b.scheduled_datetime).getTime()),
+  )
   let matchWeek
   if (objectArgs.week) {
     matchWeek = Math.abs(parseInt(objectArgs.week))
@@ -36,6 +42,9 @@ export default async (command, args, msg, objectArgs) => {
       result += `${datetime.format('ddd MMM D')} at ${datetime.format('hh:mm')} - `
     }
     result += match.teams.map(t => `*${t.name}*`).join(' *vs* ')
+    if (!match.stream_link) {
+      result += ` (off stream)`
+    }
     result += '\n'
     return result
   }, '')
