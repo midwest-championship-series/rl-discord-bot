@@ -59,7 +59,6 @@ const commands = [
   { command: 'update', handler: updateDoc, permissions: ['all-owner', 'all-manager'] },
   { command: 'create', handler: createDoc, permissions: ['all-owner', 'all-manager'] },
   { command: 'merge', handler: mergePlayers, permissions: ['all-owner', 'all-manager'] },
-  { command: 'ff', handler: forfeit, permissions: ['all-owner', 'all-manager'] },
 ]
 
 const configureActions = commandChannels => {
