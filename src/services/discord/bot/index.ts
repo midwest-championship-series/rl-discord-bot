@@ -20,6 +20,7 @@ import standings from './standings'
 import initVoiceHandler from './voice-channels'
 import manualReport from './manualreport'
 import playerStats from './playerstats'
+import playerHistory from './playerhistory'
 
 const client = new Discord.Client()
 
@@ -48,6 +49,7 @@ const commands = [
   { command: 'playerstats', handler: playerStats, anyChannel: true },
   { command: 'link', handler: requestLinkAccount },
   { command: 'report', handler: report },
+  { command: 'playerhistory', handler: playerHistory },
   { command: 'manualreport', handler: manualReport, permissions: ['all-owner', 'all-manager'] },
   { command: 'audit', handler: audit },
   { command: 'reprocess', handler: reprocess, permissions: ['all-owner', 'all-manager'] },
