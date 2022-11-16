@@ -141,6 +141,12 @@ const getPlayerStats = async (filters: string[], stats: string[]) => {
   return response
 }
 
+const ballchasing = {
+  getGamePlayers: gameId => {
+    return get(`modules/ballchasing/${gameId}/player-info`)
+  },
+}
+
 const legacyGetPlayerStats = async (playerID: string, seasonID: string) => {
   if (seasonID === 'all') {
     const Response = await get('leagues')
@@ -255,4 +261,5 @@ export default {
   legacyGetPlayerStats,
   getSeasonStandings,
   getPlayerStats,
+  ballchasing,
 }

@@ -6,7 +6,7 @@ import linkPlayer from './linkplayer'
 import reprocess from './reprocess'
 import report from './report'
 import audit from './audit'
-import dm, { requestLinkAccount } from './dm'
+import requestLinkAccount from './link'
 import createTeams from './createteams'
 import rlStats from '../../rl-stats'
 import checkPermissions from './permissions'
@@ -21,6 +21,7 @@ import initVoiceHandler from './voice-channels'
 import manualReport from './manualreport'
 import playerStats from './playerstats'
 import playerHistory from './playerhistory'
+import gameinfo from './gameinfo'
 
 const client = new Discord.Client()
 
@@ -52,6 +53,7 @@ const commands = [
   { command: 'playerhistory', handler: playerHistory },
   { command: 'manualreport', handler: manualReport, permissions: ['all-owner', 'all-manager'] },
   { command: 'audit', handler: audit },
+  { command: 'gameinfo', handler: gameinfo },
   { command: 'reprocess', handler: reprocess, permissions: ['all-owner', 'all-manager'] },
   { command: 'linkteam', handler: linkTeam, permissions: ['all-owner', 'all-manager'] },
   { command: 'unlinkteam', handler: linkTeam, permissions: ['all-owner', 'all-manager'] },

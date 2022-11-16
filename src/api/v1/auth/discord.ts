@@ -4,6 +4,8 @@ import { create, ModuleOptions } from 'simple-oauth2'
 import rlStats from '../../../services/rl-stats'
 import { getConnections, getUser } from '../../../services/discord'
 
+const mncsSiteUrl = 'https://www.mnchampionshipseries.com/'
+
 // Initialize the OAuth2 Library
 const initialize = () => {
   const credentials: ModuleOptions = {
@@ -27,9 +29,7 @@ const syncPlayers = async discordUser => {
   const acceptedConnections = ['steam', 'xbox']
   const players = await rlStats.get('players', { discord_id: discordUser.id })
   if (players.length > 1) throw new Error(`multiple players linked with discord id: ${discordUser.id}`)
-  const accounts = discordUser.connections
-    .filter(c => acceptedConnections.includes(c.type))
-    .map(c => ({ platform: c.type, platform_id: c.id }))
+  const accounts = discordUser.connections.map(c => ({ platform: c.type, platform_id: c.id }))
 
   if (!players[0]) {
     return rlStats.post('players', {
@@ -74,7 +74,7 @@ export async function DiscordCallback(req: Request, res: Response, next: NextFun
     user.connections = await getConnections(token.access_token)
     // add user to spreadsheet
     await syncPlayers(user)
-    return res.redirect(process.env.MNCS_SITE_URL)
+    return res.redirect(mncsSiteUrl)
   } catch (error) {
     return next(error)
   }
