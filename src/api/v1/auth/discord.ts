@@ -22,13 +22,13 @@ const initialize = () => {
   return create(credentials)
 }
 
-const scope = 'identify connections'
+const scope = 'identify connections email'
 const getRedirect = () => `${process.env.PROTOCOL}://${process.env.HOST}/api/v1/auth/discord/callback`
 
 const syncPlayers = async discordUser => {
-  const acceptedConnections = ['steam', 'xbox']
   const players = await rlStats.get('players', { discord_id: discordUser.id })
   if (players.length > 1) throw new Error(`multiple players linked with discord id: ${discordUser.id}`)
+  console.log(JSON.stringify(discordUser, null, 2))
   const accounts = discordUser.connections.map(c => ({ platform: c.type, platform_id: c.id }))
 
   if (!players[0]) {
@@ -36,6 +36,8 @@ const syncPlayers = async discordUser => {
       screen_name: discordUser.username,
       discord_id: discordUser.id,
       accounts,
+      email: discordUser.email,
+      discord_linked: Date.now(),
     })
   }
 
@@ -44,7 +46,11 @@ const syncPlayers = async discordUser => {
     a => !player.accounts.some(b => a.platform === b.platform && a.platform_id === b.platform_id),
   ) // remove connections already known
   const allAccounts = player.accounts.concat(uniqueAccounts)
-  return rlStats.put(`/players/${player._id}`, { accounts: allAccounts })
+  return rlStats.put(`/players/${player._id}`, {
+    accounts: allAccounts,
+    email: discordUser.email,
+    discord_linked: Date.now(),
+  })
 }
 
 export function DiscordRedirect(req: Request, res: Response, next: NextFunction): void {
