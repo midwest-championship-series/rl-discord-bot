@@ -34,9 +34,9 @@ try {
   throw err
 }
 
-// start twitch bot
-try {
-  require('./services/twitch/index')
-} catch (err) {
-  throw err
-}
+// // start twitch bot
+// try {
+//   require('./services/twitch/index')
+// } catch (err) {
+//   throw err
+// }
