@@ -1,5 +1,5 @@
 // @ts-nocheck
-import * as Discord from 'discord.js'
+import { Client, IntentsBitField } from 'discord.js'
 
 import linkTeam from './linkteam'
 import linkPlayer from './linkplayer'
@@ -16,15 +16,20 @@ import getDoc from './get-doc'
 import mergePlayers from './merge'
 import schedule from './schedule'
 import standings from './standings'
-import initVoiceHandler from './voice-channels'
 import manualReport from './manualreport'
 import playerStats from './playerstats'
 import playerHistory from './playerhistory'
 import gameinfo from './gameinfo'
 
-const client = new Discord.Client()
-
-initVoiceHandler(client)
+const client = new Client({
+  intents: [
+    IntentsBitField.Flags.Guilds,
+    IntentsBitField.Flags.GuildMembers,
+    IntentsBitField.Flags.GuildMessages,
+    IntentsBitField.Flags.GuildMessageReactions,
+    IntentsBitField.Flags.GuildVoiceStates,
+  ],
+})
 
 client.once('ready', async () => {
   console.log(`Logged in as ${client.user.tag}!`)
