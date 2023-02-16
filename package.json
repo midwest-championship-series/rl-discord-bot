@@ -11,7 +11,8 @@
     "build:dev": "rm -rf build && tsc && cp .env build",
     "build:prod": "rm -rf build && tsc",
     "test": "yarn build:dev && mocha 'build/**/*.spec.js' --timeout 4000 --exit",
-    "test:ci": "yarn build:prod && MOCHA_FILE=./test-results/mocha/results.xml mocha 'build/**/*.spec.js' --reporter mocha-junit-reporter --timeout 4000 --exit"
+    "test:ci": "yarn build:prod && MOCHA_FILE=./test-results/mocha/results.xml mocha 'build/**/*.spec.js' --reporter mocha-junit-reporter --timeout 4000 --exit",
+    "commands": "ts-node scripts/register-commands"
   },
   "main": "./src/index.js",
   "repository": "git@github.com:corbfon/express-circleci-launcher.git",

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Client, IntentsBitField } from 'discord.js'
+import { Client, IntentsBitField, Collection, Events } from 'discord.js'
 
 import linkTeam from './linkteam'
 import linkPlayer from './linkplayer'
@@ -20,15 +20,38 @@ import manualReport from './manualreport'
 import playerStats from './playerstats'
 import playerHistory from './playerhistory'
 import gameinfo from './gameinfo'
+import * as commandConfig from './commands'
 
 const client = new Client({
   intents: [
     IntentsBitField.Flags.Guilds,
     IntentsBitField.Flags.GuildMembers,
     IntentsBitField.Flags.GuildMessages,
+    IntentsBitField.Flags.MessageContent,
     IntentsBitField.Flags.GuildMessageReactions,
     IntentsBitField.Flags.GuildVoiceStates,
   ],
+})
+
+client.commands = new Collection()
+for (let command in commandConfig) {
+  client.commands.set(commandConfig[command].data.name, commandConfig[command].execute)
+}
+
+client.on(Events.InteractionCreate, async interaction => {
+  if (!interaction.isChatInputCommand()) return
+  console.log('got command', interaction.commandName)
+  const command = interaction.client.commands.get(interaction.commandName)
+	if (!command) {
+		console.error(`No command matching ${interaction.commandName} was found.`)
+		return
+	}
+	try {
+		await command(interaction)
+	} catch (error) {
+		console.error(error)
+		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true })
+	}
 })
 
 client.once('ready', async () => {
@@ -70,7 +93,7 @@ const commands = [
 ]
 
 const configureActions = commandChannels => {
-  client.on('message', async msg => {
+  client.on('messageCreate', async msg => {
     msg.content = msg.content.replace(/[\r\n]+/g, ' ').replace(/\s\s+/g, ' ')
     try {
       // handle dm messages
