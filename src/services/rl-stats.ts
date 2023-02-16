@@ -133,7 +133,7 @@ const getSeasonStandings = async (seasonId: string) => {
   return get('stats/modules/standings', { season_id: seasonId })
 }
 
-const getPlayerStats = async (filters: string[], stats: string[]) => {
+const getPlayerStats = async (filters: { property: string, value: string }[], stats: string[]) => {
   const response = await post('stats/modules/player-totals', {
     filters,
     stats,

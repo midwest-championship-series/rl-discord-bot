@@ -1,7 +1,7 @@
 import * as Discord from 'discord.js'
 
-const createEmbed: () => Discord.MessageEmbed = () => {
-  return new Discord.MessageEmbed()
+const createEmbed: () => Discord.EmbedBuilder = () => {
+  return new Discord.EmbedBuilder()
 }
 
 export default createEmbed
