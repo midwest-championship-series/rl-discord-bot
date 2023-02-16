@@ -40,7 +40,7 @@ for (let command in commandConfig) {
 
 client.on(Events.InteractionCreate, async interaction => {
   if (!interaction.isChatInputCommand()) return
-  console.log('got command', interaction.commandName)
+  console.info('got command', interaction.commandName)
   const command = interaction.client.commands.get(interaction.commandName)
 	if (!command) {
 		console.error(`No command matching ${interaction.commandName} was found.`)
@@ -55,7 +55,7 @@ client.on(Events.InteractionCreate, async interaction => {
 })
 
 client.once('ready', async () => {
-  console.log(`Logged in as ${client.user.tag}!`)
+  console.info(`Logged in as ${client.user.tag}!`)
   const leagues = await rlStats.get('leagues')
   const operationChannels = leagues.reduce(
     (result, league) => {

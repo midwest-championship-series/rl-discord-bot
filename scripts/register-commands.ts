@@ -12,8 +12,6 @@ for (let command in commandConfig) {
 	commands.push(commandConfig[command].data.toJSON())
 }
 
-console.log(commands)
-
 // Construct and prepare an instance of the REST module
 const rest = new REST({ version: '10' })
 rest.setToken(DISCORD_BOT_SECRET)
