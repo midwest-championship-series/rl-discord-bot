@@ -13,7 +13,7 @@ for (let command in commandConfig) {
 }
 
 // Construct and prepare an instance of the REST module
-const rest = new REST({ version: '9' })
+const rest = new REST({ version: '10' })
 rest.setToken(DISCORD_BOT_SECRET)
 
 const runScript = async () => {

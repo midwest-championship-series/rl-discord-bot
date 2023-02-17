@@ -40,6 +40,7 @@ for (let command in commandConfig) {
 
 client.on(Events.InteractionCreate, async interaction => {
   if (!interaction.isChatInputCommand()) return
+  if (interaction.channelId === '692994579305332806' && process.env.MNRL_ENV === 'prod') return
   console.info('got command', interaction.commandName)
   const command = interaction.client.commands.get(interaction.commandName)
 	if (!command) {
