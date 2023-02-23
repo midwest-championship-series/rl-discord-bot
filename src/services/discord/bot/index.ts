@@ -21,6 +21,7 @@ import playerStats from './playerstats'
 import playerHistory from './playerhistory'
 import gameinfo from './gameinfo'
 import * as commandConfig from './commands'
+import setupVoiceManagement from './voice-channels'
 
 const client = new Client({
   intents: [
@@ -32,6 +33,8 @@ const client = new Client({
     IntentsBitField.Flags.GuildVoiceStates,
   ],
 })
+
+setupVoiceManagement(client)
 
 client.commands = new Collection()
 for (let command in commandConfig) {

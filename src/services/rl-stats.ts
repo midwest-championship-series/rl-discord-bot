@@ -121,6 +121,7 @@ const reprocess = (collection: string, params: any, channelId: string) => {
       reply_to_channel: channelId,
     },
   }
+
   return request({
     method: 'POST',
     url: [baseUrl, 'v2', 'events'].join('/'),
