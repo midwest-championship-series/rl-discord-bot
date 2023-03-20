@@ -29,9 +29,7 @@ const getDoc = async (command, args, msg, objectArgs) => {
     embed.setDescription(description)
     return embed
   })
-  for (let embed of embeds) {
-    msg.channel.send(embed)
-  }
+  msg.channel.send({ embeds })
 }
 
 export default getDoc
