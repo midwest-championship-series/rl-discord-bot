@@ -11,12 +11,11 @@ export const link = {
     embed.setTitle('Discord Link Instructions')
     embed.setURL(accountLinkURL)
     let directions = '1. Make sure any player accounts you plan to use (Steam, Xbox, PlayStation, etc..) are linked with Discord (go to Settings > Connections to add them).\n\n'
-    directions += '2. Click the link below or in the title of the message (this will take you to discord.com).\n\n'
-    directions += '3. Sign in with Discord and authorize MNCS bot to see your connected accounts.'
+    directions += '2. Click the link in the title of this message (this will take you to discord.com).\n\n'
+    directions += '3. Sign in to Discord and authorize MNCS bot to see your connected accounts.'
     embed.setFields([
       { name: 'Description', value: `This links your Discord to the player database.` },
-      { name: 'Directions', value: directions },
-      { name: 'Link', value: accountLinkURL }
+      { name: 'Directions', value: directions }
     ])
 		await interaction.reply({
       embeds: [embed],
