@@ -31,7 +31,7 @@
     "method-override": "^3.0.0",
     "pm2": "^4.2.3",
     "request": "^2.88.2",
-    "simple-oauth2": "^2.2.1",
+    "simple-oauth2": "^5.0.0",
     "tmi.js": "^1.8.4",
     "uuid": "^7.0.2"
   },
@@ -42,7 +42,7 @@
     "@types/lodash": "^4.14.168",
     "@types/mocha": "^5.2.5",
     "@types/request": "^2.48.4",
-    "@types/simple-oauth2": "^2.2.1",
+    "@types/simple-oauth2": "^5.0.3",
     "@types/sinon": "^7.0.3",
     "@types/uuid": "^7.0.2",
     "@typescript-eslint/eslint-plugin": "^2.24.0",

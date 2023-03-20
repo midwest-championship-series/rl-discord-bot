@@ -1,26 +1,22 @@
 import { Request, Response, NextFunction } from 'express'
-import { create, ModuleOptions } from 'simple-oauth2'
+import { AuthorizationCode } from 'simple-oauth2'
 
 import rlStats from '../../../services/rl-stats'
 import { getConnections, getUser } from '../../../services/discord'
 
 const mncsSiteUrl = 'https://www.mnchampionshipseries.com/'
 
-// Initialize the OAuth2 Library
-const initialize = () => {
-  const credentials: ModuleOptions = {
-    client: {
-      id: process.env.DISCORD_CLIENT_ID,
-      secret: process.env.DISCORD_CLIENT_SECRET,
-    },
-    auth: {
-      tokenHost: 'https://discord.com',
-      authorizePath: '/api/oauth2/authorize',
-      tokenPath: '/api/oauth2/token',
-    },
-  }
-  return create(credentials)
-}
+const oauth2 = new AuthorizationCode({
+  client: {
+    id: process.env.DISCORD_CLIENT_ID,
+    secret: process.env.DISCORD_CLIENT_SECRET,
+  },
+  auth: {
+    tokenHost: 'https://discord.com',
+    authorizePath: '/api/oauth2/authorize',
+    tokenPath: '/api/oauth2/token',
+  },
+})
 
 const scope = 'identify connections email'
 const getRedirect = () => `${process.env.PROTOCOL}://${process.env.HOST}/api/v1/auth/discord/callback`
@@ -55,8 +51,7 @@ const syncPlayers = async discordUser => {
 
 export function DiscordRedirect(req: Request, res: Response, next: NextFunction): void {
   // Authorization oauth2 URI
-  const oauth2 = initialize()
-  const authorizationUri = oauth2.authorizationCode.authorizeURL({
+  const authorizationUri = oauth2.authorizeURL({
     redirect_uri: getRedirect(),
     scope, // also can be an array of multiple scopes, ex. ['<scope1>, '<scope2>', '...']
     // state: '<state>'
@@ -72,9 +67,7 @@ export async function DiscordCallback(req: Request, res: Response, next: NextFun
   // Save the access token
   try {
     // discord oauth
-    const oauth2 = initialize()
-    const result = await oauth2.authorizationCode.getToken(tokenConfig)
-    const { token } = oauth2.accessToken.create(result)
+    const { token } = await oauth2.getToken(tokenConfig)
     // get user's discord info
     const user = await getUser(token.access_token)
     user.connections = await getConnections(token.access_token)
