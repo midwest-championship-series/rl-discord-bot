@@ -1,6 +1,6 @@
 import { Client, VoiceState, PermissionsBitField, VoiceBasedChannel } from 'discord.js'
 
-const CHANNEL_NAME_SLUG = 'mngg'
+const CHANNEL_NAME_SLUG = 'mcs'
 
 const isCreateChannel = (channel: VoiceBasedChannel) => {
   return channel.name.split(' ')[0].toLowerCase() === 'create'
