@@ -6,7 +6,6 @@ import {
   ActionRowBuilder,
   ComponentType,
 } from 'discord.js'
-import rlStats from '../../../rl-stats'
 
 export const proposeTransaction = {
   data: new SlashCommandBuilder()
