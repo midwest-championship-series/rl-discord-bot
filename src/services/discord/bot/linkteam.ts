@@ -4,7 +4,7 @@ const linkPlayer = async (player, team) => {
   const history = player.team_history
   // check if player is already active on the team
   if (history.find(item => item.team_id === team._id && !item.date_left)) {
-    return player.screen_name
+    throw new Error(`player "${player.screen_name}" already linked to team "${team.name}"`)
   }
   history.push({
     team_id: team._id,
@@ -52,6 +52,7 @@ const linkTeam = async (command, args, msg) => {
       created.push(newPlayer.screen_name)
       registeredPlayers.push(newPlayer)
     }
+    console.info('modifying player', franchise, team, registeredPlayers[0])
     const username = await handler(registeredPlayers[0], team)
     if (username) linked.push(username)
   }
