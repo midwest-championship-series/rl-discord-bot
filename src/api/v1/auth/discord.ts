@@ -4,7 +4,7 @@ import { AuthorizationCode } from 'simple-oauth2'
 import rlStats from '../../../services/rl-stats'
 import { getConnections, getUser } from '../../../services/discord'
 
-const mncsSiteUrl = 'https://www.mnchampionshipseries.com/'
+const redirectUrl = 'https://discord.com/channels/678836373947678740/679849807891791909'
 
 const oauth2 = new AuthorizationCode({
   client: {
@@ -73,7 +73,7 @@ export async function DiscordCallback(req: Request, res: Response, next: NextFun
     user.connections = await getConnections(token.access_token)
     // add user to spreadsheet
     await syncPlayers(user)
-    return res.redirect(mncsSiteUrl)
+    return res.redirect(redirectUrl)
   } catch (error) {
     return next(error)
   }
