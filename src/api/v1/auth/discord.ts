@@ -29,6 +29,7 @@ const syncPlayers = async discordUser => {
 
   if (!players[0]) {
     return rlStats.post('players', {
+      screen_name: discordUser.username,
       discord_id: discordUser.id,
       accounts,
       email: discordUser.email,
