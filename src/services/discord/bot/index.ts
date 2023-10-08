@@ -46,16 +46,16 @@ client.on(Events.InteractionCreate, async interaction => {
   if (interaction.channelId === '692994579305332806' && process.env.MNRL_ENV === 'prod') return
   console.info('got command', interaction.commandName)
   const command = interaction.client.commands.get(interaction.commandName)
-	if (!command) {
-		console.error(`No command matching ${interaction.commandName} was found.`)
-		return
-	}
-	try {
-		await command(interaction)
-	} catch (error) {
-		console.error(error)
-		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true })
-	}
+  if (!command) {
+    console.error(`No command matching ${interaction.commandName} was found.`)
+    return
+  }
+  try {
+    await command(interaction)
+  } catch (error) {
+    console.error(error)
+    await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true })
+  }
 })
 
 client.once('ready', async () => {
