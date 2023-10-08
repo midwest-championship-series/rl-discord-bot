@@ -1,10 +1,10 @@
-import { players } from './players'
+import { gameids } from './game-ids'
 
 const handlers = {
-  players,
+  gameids,
 }
 
-const gameInfo = async (command, args, msg, objectArgs) => {
+const matchInfo = async (command, args, msg, objectArgs) => {
   console.log('running', args)
   const handler = handlers[args[0]]
   if (!handler) {
@@ -13,4 +13,4 @@ const gameInfo = async (command, args, msg, objectArgs) => {
   await handler(command, args, msg, objectArgs)
 }
 
-export default gameInfo
+export default matchInfo

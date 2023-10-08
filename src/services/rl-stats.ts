@@ -143,8 +143,9 @@ const getPlayerStats = async (filters: { property: string; value: string }[], st
 }
 
 const ballchasing = {
-  getGameInfo: gameId => get(`modules/ballchasing/${gameId}`),
-  getGamePlayers: gameId => get(`modules/ballchasing/${gameId}/player-info`),
+  getGameInfo: gameId => get(`modules/ballchasing/gameinfo/${gameId}`),
+  getGamePlayers: gameId => get(`modules/ballchasing/gameinfo/${gameId}/player-info`),
+  getMatchInfo: matchId => get(`modules/ballchasing/matchinfo/${matchId}`),
 }
 
 const legacyGetPlayerStats = async (playerID: string, seasonID: string) => {

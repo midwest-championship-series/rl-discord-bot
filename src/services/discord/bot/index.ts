@@ -20,6 +20,7 @@ import manualReport from './manualreport'
 import playerStats from './playerstats'
 import playerHistory from './playerhistory'
 import gameinfo from './gameinfo'
+import matchinfo from './matchinfo'
 import * as commandConfig from './commands'
 import setupVoiceManagement from './voice-channels'
 
@@ -85,6 +86,7 @@ const commands = [
   { command: 'manualreport', handler: manualReport, permissions: ['all-owner', 'all-manager'] },
   { command: 'audit', handler: audit },
   { command: 'gameinfo', handler: gameinfo },
+  { command: 'matchinfo', handler: matchinfo },
   { command: 'reprocess', handler: reprocess, permissions: ['all-owner', 'all-manager'] },
   { command: 'linkteam', handler: linkTeam, permissions: ['all-owner', 'all-manager'] },
   { command: 'unlinkteam', handler: linkTeam, permissions: ['all-owner', 'all-manager'] },
