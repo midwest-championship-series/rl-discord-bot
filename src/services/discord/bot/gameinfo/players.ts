@@ -57,7 +57,7 @@ export const players = async (command, args, msg, objectArgs) => {
         const filteredMatches = possibleMatches.filter(m => m.discord_id !== player.known_player.discord_id)
         if (filteredMatches.length > 0) {
           text += `  Possible MCS players: ${filteredMatches
-            .map(p => `${p.screen_name} (${p.discord_id ? `discord_id:${p._id}` : `_id:${p._id}`})`)
+            .map(p => `${p.screen_name} (${p.discord_id ? `discord_id:${p.discord_id}` : `_id:${p._id}`})`)
             .join(', ')}\n`
         }
       }
@@ -75,9 +75,5 @@ export const players = async (command, args, msg, objectArgs) => {
       }
     }
   }
-
-  // unknown player suggestions
-
-  // text += `Known players:\n${knownPlayers.map(p => p.screen_name).join('\n')}`
   msg.channel.send(text)
 }
