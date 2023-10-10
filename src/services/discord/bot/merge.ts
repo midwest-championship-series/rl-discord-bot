@@ -30,7 +30,6 @@ const mergePlayer = async (command, args, msg) => {
     throw new Error('both user ids are the same')
   }
 
-  // for (let account of secondary.accounts) {
   const newAccounts = secondary.accounts.reduce((result, account) => {
     const match = primary.accounts.find(
       acc => acc.platform === account.platform && acc.platform_id === account.platform_id,

@@ -19,7 +19,6 @@ const linkPlayer = async (command, args, msg) => {
   )
 
   const update = {
-    screen_name: username,
     avatar: `https://cdn.discordapp.com/avatars/${id}/${avatar}.png`,
     accounts,
   }
