@@ -24,7 +24,8 @@ const report = async (command, args, msg) => {
   const tierName = msg.league.name.toLowerCase()
   const teams = franchises.map(franchise => {
     return franchise.teams.find(t => {
-      if (t.tier_name && t.tier_name.replace(' ', '').toLowerCase() === tierName) {
+      console.log('t', t.tier_name, tierName)
+      if (t.tier_name && t.tier_name.replace(' ', '').toLowerCase() === tierName.replace(' ', '').toLowerCase()) {
         t.franchise = franchise
         return t
       }
