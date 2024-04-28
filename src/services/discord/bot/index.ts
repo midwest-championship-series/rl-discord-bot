@@ -150,8 +150,6 @@ const configureActions = commandChannels => {
   })
 }
 
-console.log('logging in with token', process.env.DISCORD_BOT_SECRET)
-
 client.login(process.env.DISCORD_BOT_SECRET)
 
 export const bot = client
